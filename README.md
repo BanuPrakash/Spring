@@ -411,3 +411,86 @@ public class BookDaoRdbmsImpl implements BookDao {
 
 --------------
 
+Spring Boot --> JPA Integration
+
+ORM --> Framework ==> Object Relational Mapping --> layer on top of JDBC
+
+With Spring:
+@Configuration
+public class AppConfig {
+	@Bean
+	public DataSource getDataSource() {
+		ComboPooledDataSource cpds = new ComboPooledDataSource();
+		cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver            
+		cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+		cpds.setUser("swaldman");                                  
+		cpds.setPassword("test-password");                                  
+			
+		// the settings below are optional -- c3p0 can work with defaults
+		cpds.setMinPoolSize(5);                                     
+		cpds.setAcquireIncrement(5);
+		cpds.setMaxPoolSize(20);
+
+		return cpds;
+	}
+
+	@Bean
+	public EntityManagerFactory emf(DataSource ds) {
+		LocalContainerEntityManagerFactoryBean emf = new ...
+		emf.setDataSource(ds);
+		emf.setJpaVendor(new HibernateJpaVendor());
+		...
+		return emf;
+	}
+}
+
+With Spring Boot --> Spring Data JPA
+
+Spring Data JPA --> no need for any configuration and @Repository class
+
+Just create interface
+
+interface BookDao extends JpaRepository<Book, String> {}
+
+BASIC CRUD operations are generated in implmentation class
+
+=========
+Hibernate to DDL operation ==> CREATE, ALTER, DROP
+
+spring.jpa.hibernate.ddl-auto=update
+--> create table if not exists, use if present, alter table if required 
+
+spring.jpa.hibernate.ddl-auto=create-drop
+--> drop table and create new tables for every run of application --> useful in test env
+
+spring.jpa.hibernate.ddl-auto=verify
+--> use existing tables as is, no changes allowed --> Bottom to Top approach
+
+
+===
+
+MySQL terminal:
+
+$ docker exec -it local-mysql /bin/bash
+# mysql -u root -p
+Enter Password: Welcome123
+
+mysql> use DB_SPRING;
+mysql> show tables;
+mysql> select * from products;
++----+------------+-------+------+
+| id | name       | price | qty  |
++----+------------+-------+------+
+|  1 | iPhone 14  | 89000 |  100 |
+|  2 | OnePlus12T | 69000 |  100 |
++----+------------+-------+------+
+
+Association Mapping 
+
+=========================================
+
+RESTful 
+
+
+
+
