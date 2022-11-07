@@ -302,3 +302,110 @@ SpringApplication.run() --> loosely translates to new AnnotationConfigApplicatio
 * @Configuration
 
 ---------
+https://github.com/spring-projects/spring-framework/blob/main/spring-jdbc/src/main/resources/org/springframework/jdbc/support/sql-error-codes.xml
+
+try {
+
+} catch(SQLException ex) {
+	if(ex.getErrorCode() == 1064) {
+		thr...
+	}
+}
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field bookDao in com.adobe.demo.service.BookService required a single bean, but 2 were found:
+	- bookDaoMongoImpl:  
+	- bookDaoRdbmsImpl:
+
+
+Solution 1:
+Making one the implementation class @Primary
+
+
+@Repository
+@Primary
+public class BookDaoRdbmsImpl implements BookDao {
+
+@Repository
+public class BookDaoMongoImpl implements BookDao {
+
+-----
+
+Solution 2:
+
+@Repository("mongo")
+public class BookDaoMongoImpl implements BookDao {
+
+
+@Repository("rdbms")
+public class BookDaoRdbmsImpl implements BookDao {	
+
+
+
+@Service
+public class BookService {
+	@Autowired
+	@Qualifier("mongo")
+	private BookDao bookDao; 
+
+
+---------
+
+Solution 3: Using Profile
+
+@Service
+public class BookService {
+	@Autowired
+	private BookDao bookDao; 
+	
+
+@Profile("prod")
+@Repository
+public class BookDaoMongoImpl implements BookDao {
+
+
+@Profile("dev")
+@Repository
+public class BookDaoRdbmsImpl implements BookDao {
+
+application.properties
+spring.profiles.active=prod
+
+OR
+
+DemoApplication ==> Run ==> Run As ==> Arguments ==> Program
+--spring.profiles.active=dev
+
+
+----
+
+Solution 4:
+application.properites
+book-dao=rdbms
+
+
+@Repository
+@ConditionalOnProperty(name = "book-dao", havingValue = "mongo")
+public class BookDaoMongoImpl implements BookDao {
+
+@Repository
+@ConditionalOnProperty(name = "book-dao", havingValue = "rdbms")
+public class BookDaoRdbmsImpl implements BookDao {
+
+
+----
+
+Solution 5:
+
+@Repository
+public class BookDaoMongoImpl implements BookDao {
+
+@Repository
+@ConditionalOnMissingBean(name= "bookDaoMongoImpl")
+public class BookDaoRdbmsImpl implements BookDao {
+

@@ -5,12 +5,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@ConditionalOnProperty(name = "book-dao", havingValue = "rdbms")
-public class BookDaoRdbmsImpl implements BookDao {
+@ConditionalOnProperty(name = "book-dao", havingValue = "mongo")
+public class BookDaoMongoImpl implements BookDao {
 
 	@Override
 	public void addBook() {
-		System.out.println("Stored in RDBMS!!!");
+		System.out.println("Mongo Store!!!");
 	}
 
 }

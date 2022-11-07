@@ -8,7 +8,7 @@ import com.adobe.demo.dao.BookDao;
 @Service
 public class BookService {
 	@Autowired
-	private BookDao bookDao; // byType
+	private BookDao bookDao; 
 	
 	public void doTask() {
 		bookDao.addBook();
