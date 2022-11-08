@@ -18,7 +18,7 @@ public class ProductCRUDConfig implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 //		addProducts();
-		listProducts();
+//		listProducts();
 	}
 
 	private void listProducts() {

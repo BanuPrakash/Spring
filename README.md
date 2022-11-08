@@ -634,3 +634,8 @@ ManyToOne ==> by default is EAGER fetch
 
 --------
 
+@Transactional --> Declarative and Distributed Tx
+--> Two Phase Commit Protocol
+
+
+

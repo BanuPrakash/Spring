@@ -13,6 +13,7 @@ import com.adobe.prj.dao.ProductDao;
 import com.adobe.prj.entity.Item;
 import com.adobe.prj.entity.Order;
 import com.adobe.prj.entity.Product;
+import com.sun.xml.txw2.IllegalAnnotationException;
 
 @Service
 public class OrderService {
@@ -38,6 +39,9 @@ public class OrderService {
 		List<Item> items = o.getItems();
 		for(Item i : items) {
 			Product p = productDao.findById(i.getProduct().getId()).get();
+			if((p.getQuantity() - i.getQuantity()) <= 0) {
+				throw new IllegalAnnotationException("Product " + p.getName() + " not is stock!!!");
+			}
 			p.setQuantity(p.getQuantity() - i.getQuantity()); // Dirty Checking ==> update SQL
 			i.setAmount(p.getPrice() * i.getQuantity());
 			total += i.getAmount();
