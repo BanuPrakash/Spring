@@ -554,3 +554,83 @@ interface CustomerView {
 public interface CustomerDao extends JpaRepository<Customer, String> {
 	List<CustomerView> findByAll();
 }
+
+JDBC
+executeQuery() ==> SELECT
+executeUpdate() ==> INSERT, DELETE, UPDATE
+
+====================
+
+ORM association Mapping
+
+Bi-directional
+
+public class Customer {
+	@OneToMany(mappedBy="customer")
+	List<Order> orders = new ArrayList<>();
+}
+
+public class Order {
+	@ManyToOne
+	@JoinColumn(name="customer_fk")
+	private Customer customer;
+}
+
+---------------
+
+
+Order o = new Order();
+o.add itmes (i1, i2, i3);
+
+CRUD operations:
+save(o);
+save(i1);
+save(i2);
+save(i3);
+
+--
+
+delete(o);
+delete(i1);
+delete(i2);
+delete(i3);
+
+----------
+
+CRUD with cascade:
+@OneToMany(cascade = CascadeType.ALL)
+@JoinColumn(name="order_fk")
+private List<Item> items = new ArrayList<>();
+
+
+Order o = new Order();
+o.add itmes (i1, i2, i3);
+
+
+CRUD operations:
+save(o); --> because of cascade items also are peristed
+delete(o); --> delete a order deletes its items also
+
+no need for ItemDao
+
+---
+Default is Lazy fetching;
+
+"from Order"
+gets data from orders table
+
+explicitly i need to make calls like
+from Item where order_fk = 1
+from Item where order_fk = 2
+from Item where order_fk = 3
+from Item where order_fk = 4
+
+fetch = FetchType.EAGER
+"from Order"
+fetchs items also
+
+OneToMany ==> by default is Lazy fetch
+ManyToOne ==> by default is EAGER fetch
+
+--------
+
