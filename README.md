@@ -637,5 +637,20 @@ ManyToOne ==> by default is EAGER fetch
 @Transactional --> Declarative and Distributed Tx
 --> Two Phase Commit Protocol
 
+====================================
 
+Optimistic Lock
+
+ 1 | iPhone 14      | 89000 |  90 |       1
+
+ User 1:
+ 	buys 2
+ 	update Product set quantity = 88, version = version + 1 where id = 1 and version = 1
+User 2:
+ 	buy 10
+ 		update Product set quantity = 90, version = version + 1 where id = 1 and version = 0
+
+First Commit wins:
+
+=============================
 

@@ -29,7 +29,7 @@ public class OrderCRUD implements CommandLineRunner {
 				.product(Product.builder().id(4).build())
 				.quantity(2)
 				.build());
-		service.placeOrder(order);
+//		service.placeOrder(order);
 	}
 
 }

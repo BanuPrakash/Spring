@@ -2,6 +2,8 @@ package com.adobe.prj.cfg;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +21,10 @@ public class ProductCRUDConfig implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 //		addProducts();
 //		listProducts();
+//		service.modifyProduct();
 	}
+
+	
 
 	private void listProducts() {
 		List<Product> products = service.getProducts();

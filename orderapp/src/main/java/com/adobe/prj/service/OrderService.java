@@ -24,6 +24,13 @@ public class OrderService {
 	@Autowired
 	private OrderDao orderDao;
 	
+	@Transactional
+	public void modifyProduct() {
+		 
+		Product p = productDao.findById(3).get();
+		p.setQuantity(p.getQuantity() - 23);
+		System.out.println(p);
+	}
 	/* 
 	 {
 	 	"customer": {"email", "a@adobe.com"},
