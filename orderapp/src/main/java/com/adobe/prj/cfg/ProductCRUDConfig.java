@@ -17,7 +17,7 @@ public class ProductCRUDConfig implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		addProducts();
+//		addProducts();
 		listProducts();
 	}
 
@@ -30,14 +30,14 @@ public class ProductCRUDConfig implements CommandLineRunner {
 
 	private void addProducts() {
 		Product p1 = Product.builder()
-					.name("iPhone 14")
-					.price(89000.00)
+					.name("Logitech Mouse")
+					.price(980.00)
 					.quantity(100)
 					.build();
 	
 		Product p2 = Product.builder()
-				.name("OnePlus12T")
-				.price(69000.00)
+				.name("LG AC")
+				.price(45000.00)
 				.quantity(100)
 				.build();
 		

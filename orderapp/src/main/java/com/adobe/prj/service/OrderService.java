@@ -19,6 +19,15 @@ public class OrderService {
 		return productDao.save(p);
 	}
 	
+	public List<Product> getByRange(double low, double high) {
+		return productDao.getByRange(low, high);
+	}
+	
+	public Product updatePrice(int id, double price) {
+		productDao.updateProduct(id, price);
+		return this.getProductById(id);
+	}
+	
 	public List<Product> getProducts() {
 		return productDao.findAll();
 	}

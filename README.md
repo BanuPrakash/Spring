@@ -489,8 +489,68 @@ Association Mapping
 
 =========================================
 
-RESTful 
+Day 2
+
+Spring Boot -> Opiniated FW
+@SpringBootApplication
+-> @ComponentScan
+--->@Component , @Repository, @Controller, @RestController, @Configuration, @Service
+---> @Bean --> Factory method ==> Object returned from this method is managed by Spring Container
+a) Instances of classes which are from 3rd party library
+b) use Parameterized constructor instead of default constructor
+
+-> @EnableAutoConfiguration --> built in config instances --> Connection pool , HibernateJPAVendor() ...
+
+@Autowired, @Primary, @Qualifer, @Profile, ...
+
+---
+
+JPA
+--> DataSource
+--> EntityManagerFactory
+--> JPAVendor
+--> EntityManager manages PersistenceContext [ env where @Entity is managed]
+
+create interface of type JpaRepository<Entity, PK>; Spring Data Jpa generets @Repository class for the interface
 
 
+---------------
 
+@Query("") --> SQL or JPQL
 
+// scalar values
+public interface ProductDao extends JpaRepository<Product, Integer> {
+ @Query("select name, price from Product")
+ List<Object[]> getNameAndPrice(); ==> Object[0] name and Object[1] --> price
+}
+
+for(List<Object[]> data : productDao.getNameAndPrice()) {
+ 	System.out.println(data[0] , data[1])
+ }
+OR
+
+interface ProductView {
+	String getName();
+	double getPrice();
+}
+
+ @Query("select name, price from Product")
+ List<ProductView> getNameAndPrice(); ==> Object[0] name and Object[1] --> price
+
+ for(List<ProductView> data : productDao.getNameAndPrice()) {
+ 	System.out.println(data.getName(), data.getPrice())
+ }
+---
+
+interface CustomerView {
+	String getFirstName();
+	String getLastName();
+	@Value("#{firstName} , #{lastName}")
+	String fullName();
+}
+
+# --> SpEL
+
+public interface CustomerDao extends JpaRepository<Customer, String> {
+	List<CustomerView> findByAll();
+}
