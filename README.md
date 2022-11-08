@@ -715,3 +715,9 @@ POST http://localhost:8080/api/orders
 	 	]
 }
 
+Spring MVC WebApplications uses OpenSessionInView Pattern
+
+spring.jpa.open-in-view=false
+
+=========================================================================
+
