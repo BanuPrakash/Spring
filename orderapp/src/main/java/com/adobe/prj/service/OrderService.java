@@ -58,7 +58,9 @@ public class OrderService {
 	}
 	
 	public List<Order> getOrders() {
-		return orderDao.findAll();
+	  List<Order> orders = orderDao.findAll();
+	  System.out.println("Has Items been fetched!!!");
+	  return orders;
 	}
 	
 	

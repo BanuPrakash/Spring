@@ -654,3 +654,64 @@ First Commit wins:
 
 =============================
 
+RESTful
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+
+* Tomcat Embedded Web server ==> port 8080
+* Spring MVC with servlet container
+* HttpMessageHandler --> Jackson
+
+Java <--> JSON
+	* Jackson
+	* Jettison
+	* GSON
+	* Moxy
+
+Install POSTMAN
+
+Browser:
+http://localhost:8080/api/products
+http://localhost:8080/api/products/3
+http://localhost:8080/api/products?low=100&high=2000
+
+POSTMAN
+POST http://localhost:8080/api/products
+
+HEADERS:
+Accept: application/json
+Content-type: application/json
+
+Body Raw:
+{
+    "name": "Mac M1-Pro",
+    "price": "159999.00",
+    "quantity": 100
+}
+
+RESPONSE: 201 Created
+
+{
+    "id": 7,
+    "name": "Mac M1-Pro",
+    "price": 159999.0,
+    "quantity": 100,
+    "version": 0
+}
+
+==============
+
+Order 
+POST http://localhost:8080/api/orders
+
+ {
+	 	"customer": {"email": "a@adobe.com"},
+	 	"items": [
+	 		{"product": {"id": 1},"quantity": 2},
+	 		{"product": {"id": 3},"quantity": 5}
+	 	]
+}
+
