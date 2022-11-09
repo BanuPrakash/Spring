@@ -2,9 +2,12 @@ package com.adobe.prj.api;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +23,7 @@ import com.adobe.prj.entity.Product;
 import com.adobe.prj.service.NotFoundException;
 import com.adobe.prj.service.OrderService;
 
+@Validated
 @RestController
 @RequestMapping("api/products")
 public class ProductController {
@@ -48,7 +52,7 @@ public class ProductController {
 	// Content-type:application/json
 	// POST http://localhost:8080/api/products
 	@PostMapping()
-	public ResponseEntity<Product> addProduct(@RequestBody Product p) {
+	public ResponseEntity<Product> addProduct(@RequestBody @Valid Product p) {
 		service.insertProduct(p);
 		return new ResponseEntity<Product>(p, HttpStatus.CREATED);
 	}

@@ -752,8 +752,65 @@ JoinPoint --> place where we can weave a Aspect
 PointCut --> selected JoinPoint
 Advice --> Before, After, Around, AfterReturning, AfterThrowing
 
+Transaction / Profile --> Around
+
 Task:
 
 CustomerController ==> GET, POST, PUT, DELETE
 
 Day 3
+
+spring-boot-starter-web
+--> Spring MVC [DispatcherServlet, OpenSessionInViewFilter, HandlerMapping, Tomcat, Jackson]
+@Controller --> return "view"
+@RestController --> return representation of resource
+
+@RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping
+
+@ResponseBody --> HttpMessageHandler Java--> JSON based on accept:application/json --> payload
+
+@RequestBody ---> HttpMessageHandler JSON --> Java based on content-type:application/json
+
+JPA --> @Entity, JpaRepository, @Query , Association Mapping [@OneToMany, @ManyToOne, @OneToOne, @ManyToMany]
+
+@Transactional
+
+--------------------------
+
+AOP --> Aspect Oriented Programming
+
+AspectJ --> PointCuts --> Dynamic pointcut --> Runtime
+
+Spring --> Pointcuts --> Static pointcut --> Compiler / ClassLoading
+
+https://docs.spring.io/spring-framework/docs/2.0.x/reference/aop.html
+
+Global Exception Handling Using @ControllerAdvice Classes
+
+Validation:
+	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+	</dependency>
+
+@NotBlank(message="Name is required")
+	private String name;
+	
+	@Min(value = 10, message="Price ${validatedValue} should be more than {value}")
+	private double price;
+	
+	@Min(value = 0, message="Quantity ${validatedValue} should be more than {value}")
+	@Column(name="qty")
+	private int quantity;
+
+@Validated
+
+addProduct(@RequestBody @Valid Product p)
+
+
+MethodArgumentNotValidException:  
+[Field error in object 'product' on field 'price': rejected value [7.0]; codes [Min.product.price,Min.price,Min.double,Min]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [product.price,price]; arguments []; default message [price],10]; default message [Price 7.0 should be more than 10]] 
+
+[Field error in object 'product' on field 'quantity': rejected value [-8]; codes [Min.product.quantity,Min.quantity,Min.int,Min]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [product.quantity,quantity]; arguments []; default message [quantity],0]; default message [Quantity -8 should be more than 0]] 
+
+[Field error in object 'product' on field 'name': rejected value []; codes [NotBlank.product.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [product.name,name]; arguments []; default message [name]]; default message [Name is required]] ]
