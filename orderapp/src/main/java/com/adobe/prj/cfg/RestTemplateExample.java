@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.adobe.prj.entity.Product;
 
-@Component
+//@Component
 public class RestTemplateExample implements CommandLineRunner {
 	@Autowired
 	RestTemplate restTemplate;

@@ -830,5 +830,99 @@ MockMvc --> to perform GET, POST, PUT and DELETE requests actions on Controller
 
 -------------------
 
+RestTemplate
+WebClient
 
+Documentation:
+RAML
+
+/books:
+  /{bookTitle}
+    get:
+      queryParameters:
+        author:
+          displayName: Author
+          type: string
+          description: An author's full name
+          example: Mary Roach
+          required: false
+        publicationYear:
+          displayName: Pub Year
+          type: number
+          description: The year released for the first time in the US
+          example: 1984
+          required: false
+        rating:
+          displayName: Rating
+          type: number
+          description: Average rating (1-5) submitted by users
+          example: 3.14
+          required: false
+        isbn:
+          displayName: ISBN
+          type: string
+          minLength: 10
+          example: 0321736079
+    put:
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true
  
+=================================
+
+	<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.12</version>
+		</dependency>
+
+http://localhost:8080/v3/api-docs
+http://localhost:8080/swagger-ui/index.html
+
+=============================
+
+Caching
+Client-side Caching:
+* Cache-control --> maxAge
+* Etag
+
+GET http://localhost:8080/api/products/cache/3
+Headers:
+Etag: "-1690458404"
+SC: 200
+
+body contains product
+Next Request
+If-None-Match: "-1690458404"
+
+304 Not Modified
+no payload
+
+---------
+Caching @ API level
+
+	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+
+By Default --> ConcurrentHashMap   is used by default for Cache
+
+@EnableCaching
+public class OrderappApplication {
+
+@Cacheable(value="productCache", key ="#id")
+@CachePut(value="productCache", key="#id")
+@CacheEvict(value="productCache", key="#id")
+
+@Cacheable(value="productCache", key="#p.id", condition = "#p.price > 5000")
+public Product addProduct(@RequestBody @Valid Product p) {
+
+@Cacheable(value="productCache", key ="#id", unless="#result != null")
+public @ResponseBody Product getProduct(@PathVariable("id") int id) throws NotFoundException { 
+
+==============
+
