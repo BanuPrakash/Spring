@@ -721,3 +721,39 @@ spring.jpa.open-in-view=false
 
 =========================================================================
 
+AOP --> Aspect Oriented Programming
+
+AOP eliminates CrossCutting Concerns --> Concern is a bit code which can be used along with main logic
+like Logging, Security, Profile, Transaction
+--> leads to code scatterning and code tangling
+
+
+public void transferFunds(Account from, Account to, double amt) {
+	isUserValid(); // security CrossCutting Concerns
+	log("tx starts"); // CrossCutting Concerns
+	try {
+		tx.begin(); // CrossCutting Concerns
+		debit(from);
+		log("amount debited"); // CrossCutting Concerns
+		credit(to);
+		log("amount debited"); // CrossCutting Concerns
+		writeToTx();
+		tx.commit(); // CrossCutting Concerns
+    } catch(Exception ex) {
+    	log(ex); // CrossCutting Concerns
+    	tx.rollback(); // CrossCutting Concerns
+    }
+}
+
+---
+
+Aspect --> code which can be weaved to diffent JoinPoints [ Log , Security, Profile, Tx]
+JoinPoint --> place where we can weave a Aspect 
+PointCut --> selected JoinPoint
+Advice --> Before, After, Around, AfterReturning, AfterThrowing
+
+Task:
+
+CustomerController ==> GET, POST, PUT, DELETE
+
+Day 3

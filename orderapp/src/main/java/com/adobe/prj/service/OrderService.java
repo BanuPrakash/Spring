@@ -72,7 +72,7 @@ public class OrderService {
 		return productDao.getByRange(low, high);
 	}
 	
-	public Product updatePrice(int id, double price) {
+	public Product updatePrice(int id, double price) throws NotFoundException {
 		productDao.updateProduct(id, price);
 		return this.getProductById(id);
 	}
@@ -81,12 +81,12 @@ public class OrderService {
 		return productDao.findAll();
 	}
 	
-	public Product getProductById(int id) {
+	public Product getProductById(int id) throws NotFoundException {
 		Optional<Product> opt = productDao.findById(id);
 		if(opt.isPresent()) {
 			return opt.get();
 		} else {
-			return null;
+			throw new NotFoundException("Product with id : " + id + " doesn't exist!!!");
 		}
 		
 	}

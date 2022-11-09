@@ -5,7 +5,31 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2022-11-04T14:44:20Z</updated>
+  <updated>2022-11-08T08:00:00Z</updated>
+  <entry>
+    <title>This Week in Spring - November 8th, 2022</title>
+    <link rel="alternate" href="https://spring.io/blog/2022/11/08/this-week-in-spring-november-8th-2022" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2022-11-08:4984</id>
+    <updated>2022-11-08T08:00:00Z</updated>
+    <content type="html">&lt;p&gt;Hi, Spring fans! Welcome to another installment of &lt;em&gt;This Week in Spring&lt;/em&gt;! I&amp;rsquo;ve been busy this last week! I&amp;rsquo;ve been visiting with customers and talking to the community here in South East Asia. I was in Malaysia last week, and now I&amp;rsquo;m in Bangkok, Thailand. I&amp;rsquo;m near the end of my time here in SE Asia, which makes me sad. I&amp;rsquo;m dearly going to miss the food and the weather, but time waits for no person, and it&amp;rsquo;s almost time to go home.&lt;/p&gt;
+&lt;p&gt;And with time comes a jam-packed roster of new things we can read and learn from. So, without further ado, let&amp;rsquo;s dive right into it!&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2022/11/03/a-bootiful-podcast-java-champion-legend-and-prolific-open-source-contributor-andres-almiray"&gt;A Bootiful Podcast: Java Champion, legend, and prolific open source contributor Andres Almiray&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2022/11/03/cve-report-published-for-spring-tools"&gt;CVE Report Published for Spring Tools&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://feeds.feedblitz.com/~/718784722/0/baeldung~Can-a-Java-Application-Use-More-Memory-than-the-Heap-Size"&gt;Can a Java Application Use More Memory than the Heap Size?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://feeds.feedblitz.com/~/718784720/0/baeldung~JUnit-Testing-Methods-That-Call-Systemexit"&gt;JUnit – Testing Methods That Call System.exit()&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2022/11/01/spring-authorization-server-0-4-0-rc1-available-now"&gt;Spring Authorization Server 0.4.0-RC1 available now&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2022/11/01/spring-authorization-server-1-0-0-rc1-available-now"&gt;Spring Authorization Server 1.0.0-RC1 available now&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2022/11/04/spring-data-2022-0-0-rc2-available"&gt;Spring Data 2022.0.0-RC2 available&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2022/11/02/spring-modulith-0-1-m2-released"&gt;Spring Modulith 0.1 M2 released&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Have you tested your application against the upcoming Spring Boot 3? There&amp;rsquo;s a &lt;em&gt;ton&lt;/em&gt; of amazing new features arriving in this release and you should definitely be kicking the tires now. Remember: Spring Framework 6 is due in about a week&amp;rsquo;s time and Spring Boot 3 is due less than a few weeks after that! And you know where to go: &lt;a href="https://start.spring.io"&gt;start.spring.io&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>Spring Data 2022.0.0-RC2 available</title>
     <link rel="alternate" href="https://spring.io/blog/2022/11/04/spring-data-2022-0-0-rc2-available" />
@@ -960,34 +984,6 @@ For more detailed guidance on how to migrate to Spring Modulith, see the Spring 
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Boot 3.0.0-RC1 available now</title>
-    <link rel="alternate" href="https://spring.io/blog/2022/10/20/spring-boot-3-0-0-rc1-available-now" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Phil Webb</name>
-    </author>
-    <id>tag:spring.io,2022-10-21:4963</id>
-    <updated>2022-10-21T04:00:00Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the team and everyone who has contributed, I&amp;rsquo;m happy to announce that Spring Boot &lt;code&gt;3.0.0-RC1&lt;/code&gt; has been released and is now available from &lt;a href="https://repo.spring.io/milestone"&gt;https://repo.spring.io/milestone&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;This release includes &lt;a href="https://github.com/spring-projects/spring-boot/releases/tag/v3.0.0-RC1"&gt;135 enhancements, documentation improvements, dependency upgrades, and bug fixes&lt;/a&gt;. &lt;/p&gt;
-&lt;p&gt;This is our first release candidate for Spring Boot 3.0, which we expect to release November 24, 2022. We are not expecting any more features to be added at this point, and we will only be making API changes if we find issues.&lt;/p&gt;
-&lt;p&gt;This release is the culmination of 11 months of work and is the first release to fully realize the themes that we set out to deliver in Spring Boot 3.0. Most notably, this release builds on the multi-year R&amp;amp;D effort that started with the experimental Spring Native project to provide support for GraalVM native images.&lt;/p&gt;
-&lt;p&gt;You can now convert your Spring Boot applications to native executables using the standard Spring Boot Maven or Gradle plugins without needing any special configuration.&lt;/p&gt;
-&lt;p&gt;This release also provides a &lt;a href="https://docs.spring.io/spring-boot/docs/3.0.0-RC1/reference/html/native-image.html#native-image"&gt;new section in the reference documentation&lt;/a&gt; that explains the &lt;a href="https://docs.spring.io/spring-boot/docs/3.0.0-RC1/reference/html/native-image.html#native-image.introducing-graalvm-native-images.understanding-aot-processing"&gt;concepts behind ahead-of-time processing&lt;/a&gt; and how you can &lt;a href="https://docs.spring.io/spring-boot/docs/3.0.0-RC1/reference/html/native-image.html#native-image.developing-your-first-application"&gt;get started generating your first GraalVM native image&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;In addition to GraalVM native image support, this release also completes our migration to JakartaEE 9 and our baseline upgrade to Java 17.&lt;/p&gt;
-&lt;p&gt;Other notable new features in this release include:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;More Flexible Auto-configuration for Spring Data JDBC&lt;/li&gt;
-  &lt;li&gt;Auto-Configuration for Prometheus Exemplars&lt;/li&gt;
-  &lt;li&gt;Log4j2 Enhancements include profile support and Environment property lookup&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Please see the &lt;a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0.0-RC1-Release-Notes"&gt;release notes&lt;/a&gt; for more details and upgrade instructions.&lt;/p&gt;
-&lt;p&gt;Thanks to all those who have contributed with issue reports and pull requests.&lt;/p&gt;&lt;h3&gt;&lt;a href="#how-can-you-help" class="anchor" name="how-can-you-help"&gt;&lt;/a&gt;How can you help?&lt;/h3&gt;
-&lt;p&gt;If you&amp;rsquo;re interested in helping out, check out the &lt;a href="https://github.com/spring-projects/spring-boot/labels/status%3A%20ideal-for-contribution"&gt;&amp;ldquo;ideal for contribution&amp;rdquo; tag&lt;/a&gt; in the issue repository. If you have general questions, please ask on &lt;a href="https://stackoverflow.com"&gt;stackoverflow.com&lt;/a&gt; using the &lt;a href="https://stackoverflow.com/tags/spring-boot"&gt;&lt;code&gt;spring-boot&lt;/code&gt; tag&lt;/a&gt; or chat with the community on &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://spring.io/projects/spring-boot/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot/issues"&gt;Issues&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-boot/docs/3.0.0-RC1/reference/html"&gt;Documentation&lt;/a&gt; | &lt;a href="https://stackoverflow.com/questions/tagged/spring-boot"&gt;Stack Overflow&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;&lt;/p&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>

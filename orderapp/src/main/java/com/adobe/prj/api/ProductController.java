@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adobe.prj.entity.Product;
+import com.adobe.prj.service.NotFoundException;
 import com.adobe.prj.service.OrderService;
 
 @RestController
@@ -40,7 +41,7 @@ public class ProductController {
 	// GET http://localhost:8080/api/products/3
 	@GetMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public @ResponseBody Product getProduct(@PathVariable("id") int id) { 
+	public @ResponseBody Product getProduct(@PathVariable("id") int id) throws NotFoundException { 
 		return service.getProductById(id);
 	}
 	
@@ -53,7 +54,7 @@ public class ProductController {
 	}
 	
 	@PutMapping("/{id}")
-	public @ResponseBody Product updateProduct(@PathVariable("id") int id, @RequestBody Product p) {
+	public @ResponseBody Product updateProduct(@PathVariable("id") int id, @RequestBody Product p) throws NotFoundException {
 		return service.updatePrice(id, p.getPrice());
 	}
 	
