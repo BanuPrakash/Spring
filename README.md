@@ -815,5 +815,18 @@ MethodArgumentNotValidException:
 
 [Field error in object 'product' on field 'name': rejected value []; codes [NotBlank.product.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [product.name,name]; arguments []; default message [name]]; default message [Name is required]] ]
 
+errors, hasItem("Name Is required")
 ==============================================
+
+spring-boot-starter-test
+* Junit-Jupiter
+* Hamcrest --> Matchers / Assertion Library
+* json-path
+* Mockito --> Mocking library --> testing in isolation
+
+@WebMvcTest --> DispatcherTestServlet, @ControllerAdvice, MockMvc
+
+MockMvc --> to perform GET, POST, PUT and DELETE requests actions on Controller
+
+
 
