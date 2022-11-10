@@ -967,6 +967,43 @@ Redis Client:
 npm i redis-commander -g
 $ redis-commander
 
+========================================
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+Health Check 
+
+Spring Boot Actuator:
+* DataSourceHealthIndicator
+* MongoHealthIndicator
+* RedisHealthIndicator
+...
+
+<dependency>
+	<groupId>io.micrometer</groupId>
+	<artifactId>micrometer-registry-prometheus</artifactId>
+</dependency>
+
+Micrometer is a set of libraries for Java that allow you to capture metrics and expose them to several different tools – including Prometheus.
+
+prometheus server --> scrape data from endpoints --> time series collection happens via a pull model over HTTP
 
 
+Spring Boot Actuator <---- Prometheus [threads , cpu , http requests] --> Line Chart <-- Grafana {Dashboard}
+
+docker-compose up
+
+ab -n 3000 -c 200 http://localhost:8080/api/products/
+
+http://localhost:8080/actuator/prometheus
+
+http_server_requests_seconds_sum
+http_server_requests_seconds_count
+sum(jvm_memory_used_bytes{area="heap"})
+
+
+http://localhost:9090/
 
