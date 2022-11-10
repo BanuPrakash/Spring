@@ -39,7 +39,7 @@ public class OrderappApplication {
 	}
 	//https://spring.io/blog/2020/11/10/new-in-spring-5-3-improved-cron-expressions
 //	@Scheduled(cron = "0 0/30 * * * *")
-	@Scheduled(fixedRate = 3000)
+//	@Scheduled(fixedRate = 3000)
 	public void clearCache() {
 		System.out.println("Cache Cleared!!!");
 		cacheManager.getCacheNames().forEach(cache -> {

@@ -926,3 +926,37 @@ public @ResponseBody Product getProduct(@PathVariable("id") int id) throws NotFo
 
 ==============
 
+Day 4
+
+AOP, @ControllerAdvice, @ExceptionHandler, @Transactional [ AroundAdvice]
+
+javax.validation.constraints ==> @NotBlank, @Min, @Max, @Pattern, ...
+@Validated, @Valid --> MethodArgumentNotValidException 
+
+OpenAPI --> JavaDoc --> @Controller, @RestController
+
+Caching --> ETag --> 304 ,If-None-Match / Cache-Control --> maxAge
+
+@EnableCaching ---> ConcurrentHashMapCache implementation -->CacheManager
+
+@Cacheable, @CachPut, @CacheEvit
+condition and unless
+
+@EnableScheduling, @Schedule --> fixedRate, cron --> CacheManager to evict 
+
+Redis
+
+docker run --name some-redis -p 6379:6379 -d redis
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+
+JVM --> write --> Stream --> 
+
+public class Product implements Serializable {
+
+RedisCustomConfig.java
+
+
