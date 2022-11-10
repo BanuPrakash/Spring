@@ -1095,8 +1095,39 @@ CollectionModel ==> List<Enity> + links
 
 =======================================================
 
+Spring Data Rest
+Spring Data REST makes it easy to build hypermedia-driven REST web services on top of Spring Data repositories.
+JpaRepository
+MongoRepository
+
+* endpoints are created based on Spring Data Repository
+* No need for @RestController
+
+------------------
+
+Lombok, spring data jpa, mysql , rest repositories
+
+http://localhost:8080/products/search/getByRange?l=100&h=8889
 
 
+--> Never use @RestController
+--> instead use @BasePathAwareController 
+--> modify any existing rest paths
+or @RepositoryRestController
+--> to add new endpoints
 
 
+@Component
+public class RestConfig implements RepositoryRestConfigurer {
+    @Override
+    public void configureRepositoryRestConfiguration(RepositoryRestConfiguration restConfig,
+      CorsRegistry cors) {
+        ExposureConfiguration config = restConfig.getExposureConfiguration();
+        config.basePath("api/")
+        config.forDomainType(Product.class).withItemExposure((metadata, httpMethods) ->
+          httpMethods.disable(HttpMethod.DELETE));
+    }
+}
+
+---------------
 
