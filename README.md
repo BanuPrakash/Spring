@@ -1131,3 +1131,47 @@ public class RestConfig implements RepositoryRestConfigurer {
 
 ---------------
 
+Asynchronous operation 
+
+@EnableAsync
+
+Create Thread Pool:
+@Bean(name = "asyncExecutor")
+public Executor asyncExecutor() {
+
+
+CompletableFuture<> services ==> wich uses REST clients like --> RestTemplate or WebClient
+
+
+==============================
+
+schema.sql
+data.sql
+
+companyWithDepartmentsGraph
+	company + departments
+ select
+        company0_.id as id1_2_0_,
+        company0_.name as name2_2_0_,
+        department1_.company_id as company_3_3_1_,
+        department1_.id as id1_3_1_,
+        department1_.id as id1_3_2_,
+        department1_.company_id as company_3_3_2_,
+        department1_.name as name2_3_2_ 
+    from
+        company company0_ 
+    left outer join
+        department department1_ 
+            on company0_.id=department1_.company_id 
+    where
+        company0_.id=?
+
+
+companyWithDepartmentsAndEmployeesGraph
+	company + departments 
+
+
+When using fetchgraph all relationships are considered to be lazy regardless of annotation, 
+and only the elements of the provided graph are loaded.
+
+use loadgraph to add entities to the query results which are part of entity Graph and other EAGER fetched
