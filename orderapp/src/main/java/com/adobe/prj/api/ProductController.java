@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +30,8 @@ import com.adobe.prj.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 @Validated
 @RestController
 @RequestMapping("api/products")
@@ -36,6 +39,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class ProductController {
 	@Autowired
 	private OrderService service;
+	
+	
+	@GetMapping("/hateoas/{id}")
+	public ResponseEntity<EntityModel<Product>> getProductHateoas(@PathVariable("id") int id) throws NotFoundException { 
+		Product p = service.getProductById(id);
+		EntityModel<Product> entityModel = EntityModel.of(p ,
+				linkTo(methodOn(ProductController.class).getProductHateoas(id)).withSelfRel()
+				.andAffordance(afford(methodOn(ProductController.class).updateProduct(id, null))),
+				linkTo(methodOn(ProductController.class).getProducts(0,0)).withRel("products")
+				);
+		return ResponseEntity.ok(entityModel);
+	}
 	
 	
 	// Accept: application/json

@@ -1018,5 +1018,85 @@ import
 --> add JSON
 -->  Select DataSource [ Spring Boot Promethues]
 
+==============================
+
+HATEOAS (Hypertext As The Engine Of Application State)
+https://martinfowler.com/articles/richardsonMaturityModel.html
+
+GET /doctors/mjones/slots?date=20100104&status=open HTTP/1.1
+
+
+<openSlotList>
+  <slot id = "1234" doctor = "mjones" start = "1400" end = "1450">
+     <link rel = "/linkrels/slot/book" 
+           uri = "/slots/1234"/>
+  </slot>
+  <slot id = "5678" doctor = "mjones" start = "1600" end = "1650">
+     <link rel = "/linkrels/slot/book" 
+           uri = "/slots/5678"/>
+  </slot>
+</openSlotList>
+
+POST /slots/1234 HTTP/1.1
+[various other headers]
+
+<appointmentRequest>
+  <patient id = "jsmith"/>
+</appointmentRequest>
+
+
+<appointment>
+  <slot id = "1234" doctor = "mjones" start = "1400" end = "1450"/>
+  <patient id = "jsmith"/>
+  <link rel = "/linkrels/appointment/cancel"
+        uri = "/slots/1234/appointment"/>
+  <link rel = "/linkrels/appointment/addTest"
+        uri = "/slots/1234/appointment/tests"/>
+  <link rel = "self"
+        uri = "/slots/1234/appointment"/>
+  <link rel = "/linkrels/appointment/changeTime"
+        uri = "/doctors/mjones/slots?date=20100104&status=open"/>
+  <link rel = "/linkrels/appointment/updateContactInfo"
+        uri = "/patients/jsmith/contactInfo"/>
+  <link rel = "/linkrels/help"
+        uri = "/help/appointment"/>
+</appointment>
+
+--------
+
+/orders
+
+/orders/1/payment --> /orders/1/trackOrder
+/orders/1/cancel
+
+---------------------
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-hateoas</artifactId>
+</dependency>
+
+org.springframework.hateoas.server.mvc.WebMvcLinkBuilder		
+
+RepresentationModel
+
+EntityModel  ==> Entity + Links
+CollectionModel ==> List<Enity> + links
+
+{"id":2,"name":"OnePlus12T","price":69000.0,"quantity":97,"version":0,
+	"_links":
+	{"self":{"href":"http://localhost:8080/api/products/hateoas/2"},
+	"products":{"href":"http://localhost:8080/api/products?low=0.0&high=0.0"}
+}
+}
+
+
+@EnableHypermediaSupport(type=HypermediaType.HAL_FORMS)
+
+=======================================================
+
+
+
+
 
 
