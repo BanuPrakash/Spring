@@ -1000,10 +1000,23 @@ ab -n 3000 -c 200 http://localhost:8080/api/products/
 
 http://localhost:8080/actuator/prometheus
 
+http://localhost:9090/
 http_server_requests_seconds_sum
 http_server_requests_seconds_count
 sum(jvm_memory_used_bytes{area="heap"})
 
+---
+Grafana:
+localhost:3000
 
-http://localhost:9090/
+Add DataSource:
+http://192.168.1.6:9090
+Save & Test
+
++
+import
+--> add JSON
+-->  Select DataSource [ Spring Boot Promethues]
+
+
 
