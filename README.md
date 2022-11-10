@@ -953,10 +953,20 @@ docker run --name some-redis -p 6379:6379 -d redis
 	<artifactId>spring-boot-starter-data-redis</artifactId>
 </dependency>
 
+spring.redis.port=6379
+spring.redis.host=127.0.0.1
+
+
 JVM --> write --> Stream --> 
 
 public class Product implements Serializable {
 
 RedisCustomConfig.java
+
+Redis Client:
+npm i redis-commander -g
+$ redis-commander
+
+
 
 
