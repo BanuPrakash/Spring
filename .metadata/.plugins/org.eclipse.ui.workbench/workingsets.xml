@@ -2,5 +2,11 @@
 <workingSetManager>
 <workingSet editPageId="org.eclipse.jdt.internal.ui.DynamicSourcesWorkingSet" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1667809539226_0" label="Java Main Sources" name="Java Main Sources"/>
 <workingSet editPageId="org.eclipse.jdt.internal.ui.DynamicSourcesWorkingSet" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1667809539417_1" label="Java Test Sources" name="Java Test Sources"/>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1668164788905_3" label="orderapp_ms" name="orderapp_ms">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/orderapp_ms" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/product-service" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/order-service" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/inventory-service" type="4"/>
+</workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1667809578580_2" label="Window Working Set" name="Aggregate for window 1667809578579"/>
 </workingSetManager>

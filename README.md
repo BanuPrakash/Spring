@@ -1258,5 +1258,11 @@ Functional Web Framework
 
 ==========================
 
-Resume @4:20
+@Tailable
+
+can be used capped collections [ limited size ]
+
+docker run -it --name mongodb -d mongo --p 27017:27017
+
+============================
 
