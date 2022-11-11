@@ -1175,3 +1175,52 @@ When using fetchgraph all relationships are considered to be lazy regardless of 
 and only the elements of the provided graph are loaded.
 
 use loadgraph to add entities to the query results which are part of entity Graph and other EAGER fetched
+
+-------------
+
+Day 5
+
+* Actuator
+* Prometheus --> time series database rules.yml --> Alert
+* Grafana --> Dashboard
+
+HATEOAS --> WebMvcLinkBuilder [ linkTo, afford, methodOn] --> EntityModel or CollectionModel
+Spring Data REST --> based on Spring Repository [ JpaRepository<Product, Integer> , MongoRepository]
+@BasePathAwareController
+
+EntityGraph --> JPA
+LAZY, EAGER fetching
+
+Company --> Departments --> Employees & Offices 
+Company --> Cars
+
+Lazy: n + 1 problems
+
+from Company --> 1 Request [ 5 companies]
+
+from Departments where comany_id = 1;
+from Departments where comany_id = 2;
+from Departments where comany_id = 3;
+from Departments where comany_id = 4;
+from Departments where comany_id = 5;
+
+from Cars where comany_id = 1;
+from Cars where comany_id = 2;
+from Cars where comany_id = 3;
+from Cars where comany_id = 4;
+from Cars where comany_id = 5;
+
+from Employees where department_id = 1;
+from Employees where department_id = 2;
+
+EAGER: payload increase
+
+Map hints = 
+
+hints.put(...loadgraph or fetchgraph)
+dao.find(Entity.class, PK , hints)
+
+==========================================================
+
+
+
