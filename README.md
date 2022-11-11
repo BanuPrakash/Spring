@@ -1178,8 +1178,6 @@ use loadgraph to add entities to the query results which are part of entity Grap
 
 -------------
 
-Day 5
-
 * Actuator
 * Prometheus --> time series database rules.yml --> Alert
 * Grafana --> Dashboard
@@ -1223,4 +1221,42 @@ dao.find(Entity.class, PK , hints)
 ==========================================================
 
 
+Day 5
+
+Criteria queries are written using Java programming language APIs, are typesafe, and are portable.
+
+JPA Specification
+
+public interface Specification<T> {
+  Predicate toPredicate(Root<T> root, CriteriaQuery query, CriteriaBuilder cb);
+}
+
+
+JpaSpecificationExecutor
+
+---------------------
+
+Reactive RESTful WebServices
+
+* Publisher
+* Subscriber
+
+spring-boot-starter-webflux --> Netty Reactor as Web Server --> Event Based
+instead of
+spring-boot-starter-web --> Tomcat as HTTP Web Server --> Thread based
+
+
+Reactor Netty is an asynchronous event-driven network application framework. 
+It provides non-blocking and backpressure-ready TCP, HTTP, and UDP clients and servers. 
+
+https://projectreactor.io/docs
+
+Flux is a Publisher --> emits 0 to N elements
+Mono is a Publisher ---> emit 0 or 1 element
+
+Functional Web Framework
+
+==========================
+
+Resume @4:20
 
