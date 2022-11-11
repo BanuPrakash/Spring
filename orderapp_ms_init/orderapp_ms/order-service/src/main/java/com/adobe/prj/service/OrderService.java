@@ -39,6 +39,7 @@ public class OrderService {
                     .retrieve()
                     .bodyToMono(InventoryResponse[].class)
                     .block();
+            
             for(int i = 0; i < inventoryResponsArray.length; i++) {
             	System.out.println(inventoryResponsArray[i].getSkuCode() + ", " + inventoryResponsArray[i].isInStock());
             }

@@ -1266,3 +1266,31 @@ docker run -it --name mongodb -d mongo --p 27017:27017
 
 ============================
 
+OrderService:
+ InventoryResponse[] inventoryResponsArray = webClientBuilder.build().get()
+                    .uri("http://localhost:8082/api/inventory",
+                            uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
+                    .retrieve()
+                    .bodyToMono(InventoryResponse[].class)
+                    .block();
+
+                    
+POST: http://localhost:8081/api/orders
+
+{
+    "items": [
+        {"skuCode": "iphone_13", "price": 89000.99, "quantity": 25},
+        {"skuCode": "OnePlus12T", "price": 63434.99, "quantity": 2}
+    ]
+}
+
+Above fails:
+
+Try:
+{
+    "items": [
+        {"skuCode": "iphone_13", "price": 89000.99, "quantity": 25} 
+    ]
+}
+Success
+
