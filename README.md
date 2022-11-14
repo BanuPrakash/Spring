@@ -1274,7 +1274,7 @@ OrderService:
                     .bodyToMono(InventoryResponse[].class)
                     .block();
 
-                    
+
 POST: http://localhost:8081/api/orders
 
 {
@@ -1293,4 +1293,68 @@ Try:
     ]
 }
 Success
+
+====
+
+Spring Cloud
+
+Service Discovery: Eureka instances can be registered and clients can discover the instances using Spring-managed beans
+
+======================
+
+Day 6
+
+* reactive --> WebFlux --> Producer and Subscriber --> Flux and Mono --> event-source
+* Microservices
+
+
+Eureka Server:
+<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+		</dependency>
+
+server.port=8761
+eureka.client.fetchRegistry=false
+eureka.client.registerWithEureka=false
+
+@EnableEurekaServer
+
+
+Eureka Client
+@EnableEurekaClient
+
+spring.application.name=inventory-service
+eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka
+
+ <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+ 
+OrderService module:
+
+ @Bean
+ @LoadBalanced
+ public WebClient.Builder webClientBuilder() {
+        return WebClient.builder();
+}
+OrderService:
+  InventoryResponse[] inventoryResponsArray = webClientBuilder.build().get()
+    .uri("http://inventory-service/api/inventory"
+
+--------------------------
+
+Run:
+1) Discovery Server --> Eureka Server
+2) product-service
+3) inventory-service
+4) order-service
+
+==============
+
+http://localhost:8761/
+
+
+
 

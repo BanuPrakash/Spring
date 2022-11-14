@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 import com.adobe.prj.dao.ProductRepository;
 import com.adobe.prj.entity.Product;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @SpringBootApplication
 @RequiredArgsConstructor
+@EnableEurekaClient
 public class ProductServiceApplication implements CommandLineRunner {
 
     private final ProductRepository productRepository;
