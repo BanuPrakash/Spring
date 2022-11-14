@@ -1412,3 +1412,79 @@ Add to all microservices:
 
 ===============================
 
+Spring Security
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+By including above dependencies
+1) one user with username: user and 
+Using generated security password: 77f465ee-ad77-4274-8a27-3e5db30f8ba5
+
+is created
+
+2) makes all resources as protected
+
+http://localhost:8080/api/products ==> redirects to
+http://localhost:8080/login
+http://localhost:8080/logout
+
+JDBCAuthentication Manager:
+https://docs.spring.io/spring-security/site/docs/3.0.x/reference/appendix-schema.html
+
+=============
+
+JWT:
+JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+HEADER:
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+
+PAYLOAD:
+{
+  "sub": "banu@gmail.com",
+  "iat": 1516239022,
+  "exp": 1516239999,
+  "iss": "adobe",
+  "authorities": ["ADMIN", "MANAGER", "USER"]
+}
+
+VERIFY SIGNATURE:
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  topsecret From Configfile / env var
+)  
+
+=========================
+
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+POST: http://localhost:8080/login
+
+body
+{
+	"username" : "admin",
+	"password": "secret"
+}
+
+Response Headers:
+Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn0seyJhdXRob3JpdHkiOiJST0xFX1VTRVIifV0sImlhdCI6MTY2ODQyNzI4MCwiZXhwIjoxNjY5MjI4MjAwfQ.-jnV_0LYIMWWJJ0Cr9xI6FvfNg9LIl3dtxr2Lqgzesjth8kykIYNXOZKnHTz8Inp0HRYba86cfUijPNCha6IQg
+
+Request to 
+GET: http://localhost:8080/api/products
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn0seyJhdXRob3JpdHkiOiJST0xFX1VTRVIifV0sImlhdCI6MTY2ODQyNzI4MCwiZXhwIjoxNjY5MjI4MjAwfQ.-jnV_0LYIMWWJJ0Cr9xI6FvfNg9LIl3dtxr2Lqgzesjth8kykIYNXOZKnHTz8Inp0HRYba86cfUijPNCha6IQg
+
+==================
+
