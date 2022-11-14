@@ -1355,6 +1355,60 @@ Run:
 
 http://localhost:8761/
 
+======
+
+Spring Cloud OpenFeign
+
+Declarative REST Client: 
+order-service
+
+@EnableFeignClients
+
+@FeignClient("inventory-service")
+public interface InventoryService {
+	@RequestMapping("/api/inventory")
+	InventoryResponse[]   getInventory(List<String> skuCodes);
+}
+
+Orderservice
+
+@Autowired
+InventoryService inventoryService;
+
+Replace below code:
+   // stock
+            InventoryResponse[] inventoryResponsArray = webClientBuilder.build().get()
+                    .uri("http://inventory-service/api/inventory",
+                            uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
+                    .retrieve()
+                    .bodyToMono(InventoryResponse[].class)
+                    .block();
+
+with:
+InventoryResponse[] reponse = inventoryService.getInventory(skuCodes);
+
+===========================
+
+Spring Cloud Sleuth provides Spring Boot auto-configuration for distributed tracing.
+
+Trace ID:
+Client --> API Gateway --> Order Service --> Inventory Service --> RDBMS
+
+Zipkin: Zipkin is a distributed tracing system. 
+
+docker run -d -p 9411:9411 openzipkin/zipkin
+
+Add to all microservices:
+ <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-sleuth</artifactId>
+ </dependency>
+
+ <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+ </dependency>
 
 
+===============================
 
