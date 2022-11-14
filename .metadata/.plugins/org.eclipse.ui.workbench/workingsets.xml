@@ -8,6 +8,7 @@
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/order-service" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/inventory-service" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/discovery-service" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/api-gateway" type="4"/>
 </workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1667809578580_2" label="Window Working Set" name="Aggregate for window 1667809578579"/>
 </workingSetManager>
