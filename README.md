@@ -166,10 +166,10 @@ ctx.reset();
 3) @Configuration
 
 Spring creates instances of class which has any of the below annotations:
-1) @Component
-2) @Repository
-3) @Service
-4) @Configuration
+1) @Component ==> Utility / Helper class 
+2) @Repository ==> Persistence Code
+3) @Service ==> Decorator to say that its a facade and transactional code resides here
+4) @Configuration 
 5) @Controller
 6) @RestController
 
@@ -201,3 +201,115 @@ ByteCode Instrumentation ==> modifying the bytecode
 
 As of Now CGLib is used only for Proxy
 
+====
+MySQL
+try {
+
+} catch(SQLException ex) {
+    if(ex.getErrorCode() == 1062) {
+        throw new DuplicateKeyException(ex);
+    } else if( ex.getErrorCode() == 1054) {
+        ...
+    }
+}
+--
+
+Oracle
+try {
+
+} catch(SQLException ex) {
+    if(ex.getErrorCode() == 1) {
+        throw new DuplicateKeyException(ex);
+    } else if( ex.getErrorCode() == 900) {
+        ...
+    }
+}
+
+====
+
+
+Field employeeDao in com.xiaomi.prj.service.AppService required a single bean, but 2 were found:
+	- employeeDaoJdbcImpl:
+	- employeeDaoMongoImpl:
+
+
+Solution 1: @Primary on one of the implementation
+
+@Primary
+@Repository
+public class EmployeeDaoJdbcImpl implements EmployeeDao {
+
+Solution 2: @Qualifier
+
+@Service
+public class AppService {
+	@Autowired
+	@Qualifier("employeeDaoJdbcImpl")
+	private EmployeeDao employeeDao; // program to interface ==> Loose Coupling
+	
+-------
+or
+@Repository("jdbc")
+public class EmployeeDaoJdbcImpl implements EmployeeDao {
+
+@Repository("mongo")
+public class EmployeeDaoMongoImpl implements EmployeeDao {
+
+@Service
+public class AppService {
+	@Autowired
+	@Qualifier("jdbc")
+	private EmployeeDao employeeDao; // program to interface ==> Loose Coupling
+----
+
+Solution 3: @Profile
+
+@Profile("dev")
+@Repository("mongo")
+public class EmployeeDaoMongoImpl implements EmployeeDao {
+
+
+@Profile("prod")
+@Repository("jdbc")
+public class EmployeeDaoJdbcImpl implements EmployeeDao {
+
+Program Arguments:
+
+Run As -> Run Configurations
+--spring.profiles.active=dev
+
+OR
+application.properties
+spring.profiles.active=dev
+
+Solution 4: 
+
+@Repository("jdbc")
+public class EmployeeDaoJdbcImpl implements EmployeeDao {
+
+
+@ConditionalOnMissingBean(name = "jdbc")
+@Repository("mongo")
+public class EmployeeDaoMongoImpl implements EmployeeDao {
+
+---
+DataSource ==> Pool of database connection
+
+@ConditionalOnMissingBean(name = "dataSource")
+@Repository("mongo")
+public class EmployeeDaoMongoImpl implements EmployeeDao {
+
+=====================
+
+Solution 5:
+application.properties
+DAO=jdbc
+
+
+@ConditionalOnProperty(name="DAO", havingValue = "jdbc")
+@Repository("jdbc")
+public class EmployeeDaoJdbcImpl implements EmployeeDao {
+
+@ConditionalOnProperty(name="DAO", havingValue = "mongo")
+@Repository("mongo")
+public class EmployeeDaoMongoImpl implements EmployeeDao {
