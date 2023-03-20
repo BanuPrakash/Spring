@@ -240,15 +240,16 @@ Solution 1: @Primary on one of the implementation
 public class EmployeeDaoJdbcImpl implements EmployeeDao {
 
 Solution 2: @Qualifier
-
+```
 @Service
 public class AppService {
 	@Autowired
 	@Qualifier("employeeDaoJdbcImpl")
 	private EmployeeDao employeeDao; // program to interface ==> Loose Coupling
-	
+```
 -------
 or
+```
 @Repository("jdbc")
 public class EmployeeDaoJdbcImpl implements EmployeeDao {
 
@@ -260,10 +261,11 @@ public class AppService {
 	@Autowired
 	@Qualifier("jdbc")
 	private EmployeeDao employeeDao; // program to interface ==> Loose Coupling
+```
 ----
 
 Solution 3: @Profile
-
+```
 @Profile("dev")
 @Repository("mongo")
 public class EmployeeDaoMongoImpl implements EmployeeDao {
@@ -272,7 +274,7 @@ public class EmployeeDaoMongoImpl implements EmployeeDao {
 @Profile("prod")
 @Repository("jdbc")
 public class EmployeeDaoJdbcImpl implements EmployeeDao {
-
+```
 Program Arguments:
 
 Run As -> Run Configurations
@@ -283,7 +285,7 @@ application.properties
 spring.profiles.active=dev
 
 Solution 4: 
-
+```
 @Repository("jdbc")
 public class EmployeeDaoJdbcImpl implements EmployeeDao {
 
@@ -291,21 +293,21 @@ public class EmployeeDaoJdbcImpl implements EmployeeDao {
 @ConditionalOnMissingBean(name = "jdbc")
 @Repository("mongo")
 public class EmployeeDaoMongoImpl implements EmployeeDao {
-
+```
 ---
 DataSource ==> Pool of database connection
-
+```
 @ConditionalOnMissingBean(name = "dataSource")
 @Repository("mongo")
 public class EmployeeDaoMongoImpl implements EmployeeDao {
-
+```
 =====================
 
 Solution 5:
 application.properties
 DAO=jdbc
 
-
+```
 @ConditionalOnProperty(name="DAO", havingValue = "jdbc")
 @Repository("jdbc")
 public class EmployeeDaoJdbcImpl implements EmployeeDao {
@@ -313,3 +315,204 @@ public class EmployeeDaoJdbcImpl implements EmployeeDao {
 @ConditionalOnProperty(name="DAO", havingValue = "mongo")
 @Repository("mongo")
 public class EmployeeDaoMongoImpl implements EmployeeDao {
+```
+============================================
+
+Factory Method: We need to create instances of class and hand over to Spring container for management
+* instances of classes from 3rd party library which doesn't have any of 6 annotations mentioned above
+* Our own classes which can be used in different framework; we need to instantiate by our own init data
+
+```
+@Configuration
+public class AppConfig {
+
+	// Factory methods
+	@Bean
+	public DataSource getDataSource() throws Exception{
+		ComboPooledDataSource cpds = new ComboPooledDataSource();
+		cpds.setDriverClass("org.postgresql.Driver"); //loads the jdbc driver            
+		cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+		cpds.setUser("swaldman");                                  
+		cpds.setPassword("test-password");                                  
+			
+		// the settings below are optional -- c3p0 can work with defaults
+		cpds.setMinPoolSize(5);                                     
+		cpds.setAcquireIncrement(5);
+		cpds.setMaxPoolSize(20);
+		return cpds;
+	}
+}
+
+
+@Service
+public class AppService {
+	@Autowired
+	private EmployeeDao employeeDao; // program to interface ==> Loose Coupling
+	
+	@Autowired
+	DataSource ds;
+	
+	public void insert() {
+		System.out.println(ds);
+		this.employeeDao.addEmployee();
+	}
+}
+```
+
+ORM --> Object Relational Mapping
+* simplifies interaction with RDBMS
+* layer on top of JDBC
+* OO approach 
+
+class Employee {
+    empId,
+    name,
+    email
+}
+
+class Laptop {
+    serial,
+    desc,
+    ram
+    manufDate
+}
+
+Database approach 1: Foreign Key
+
+Employee 
+emp_id name email
+
+Laptop
+SERIAL  DESC  RAM MAN_DATE EMP_FK
+
+JDBC code to CRUD operations
+
+Database approach 2:  Single Table
+Employee 
+emp_id name email SERIAL  DESC  RAM MAN_DATE
+
+ Whole of JDBC code is scrapped and re-write
+
+class <---> table
+fields <---> columns of table
+
+```
+@Table(name="emp")
+public class Employee {
+    @Column(name="emp_id")
+    int employeeId;
+
+    @Column(name="first_name")
+    String firstName;
+}
+```
+ORMs are going to generate DDL and DML based on mapping
+
+JDBC:
+
+public void addEmployee(Employee e) {
+    Connection con = null;
+    try {
+        con = DriverManager.getConnection(...);
+        PreparedStatement ps = con.prepareStatement("insert into emp values (?,?,?));
+        ps.setInt(1, e.getEmployeeId());
+        ps.setString(2, e.getFirstName());
+        //
+        ps.executeUpdate();
+    } catch(SQLException ex) {
+        ...
+    } finally {
+        con.close();
+    }
+}
+
+With ORM:
+public void addEmployee(Employee e) {
+    em.save(e);
+}
+
+--> Establish connection , Statement , exception handling, release connection
+
+
+ORM frameworks --> Hibernate, TopLink, KODO, OpenJPA, Eclipse Link, JDO,...
+
+JPA --> Java Persistence API --> Specification
+
+* DataSource
+* PersistenceContext
+* EntityManager
+* EntityManagerFactory
+
+```
+@Configuration
+public class AppConfig {
+	// Factory methods
+	@Bean
+	public DataSource getDataSource() throws Exception{
+		ComboPooledDataSource cpds = new ComboPooledDataSource();
+		cpds.setDriverClass("org.postgresql.Driver"); //loads the jdbc driver            
+		cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+		cpds.setUser("swaldman");                                  
+		cpds.setPassword("test-password");                                  
+		return cpds;
+	}
+
+    @Bean
+    public EntityManagerFactory emf(DataSource ds) {
+        LocalContainerEntityManagerFactory emf = new ...();
+        emf.setDataSource(ds);
+        emf.setJpaVendor(new HibernateJpaVendor()); // which ORM to use
+        emf.setPackagesToScan("com.xiaomi.prj.entity");
+        ....
+        return emf;
+    }
+}
+
+@Respository
+public class EmployeeDaoJpaImpl implements EmployeeDao {
+    @PersistenceContext
+    EntityManager em;
+
+    public void addEmployee(Employee e) {
+        em.save(e);
+    }
+
+    public Employee getEmployeeById(int id) {
+        em.find(Employee.class, id);
+    }
+}
+
+Entities are classes with @Entity annotation
+@Entity
+public class Customer {}
+```
+
+Spring Data Jpa --> Simplifies using ORM; no need to configure DataSource, EntityManagerFactory, PersistenceContext ==> All comes out of the box
+Spring Boot is highly opinated and configures Hibernate out of the box;
+```
+public interface EmployeeDaoJpaImpl implements JpaRepository<Employee, Integer> {
+}
+```
+https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
+
+provides all CRUD operations.
+
+New Spring boot starter project with : Lombok, Spring Data Jpa and MySQL dependency
+
+1) spring.jpa.hibernate.ddl-auto=update
+
+create table if not exists; if already exists map to class
+
+2) spring.jpa.hibernate.ddl-auto=create-drop
+create table on application startup; and destroy tables when application shuts down
+
+3) spring.jpa.hibernate.ddl-auto=none
+DBA creates tables for me; I just do mapping 
+
+---
+Spring Data JPA is creating instance of @Repository class for the below interface:
+
+public interface ProductDao extends JpaRepository<Product, Integer> {
+}
+
+
