@@ -1,8 +1,12 @@
 package com.xiaomi.prj.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -23,4 +27,8 @@ public class Customer {
 	
 	@Column(name="first_name")
 	private String firstName;
+	
+	@Builder.Default
+	@OneToMany(mappedBy = "customer")
+	private List<Order> orders = new ArrayList<>();
 }

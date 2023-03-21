@@ -734,3 +734,122 @@ Dirty Checking of ORM:
 within Transactional Boundary / PersitenceContext if entity becomes dirty ORM issues UPDATE Query,
 no need for explicitly invoking update
 
+
+Ways to update Entity:
+
+1) Using Query
+	@Modifying
+	@Query("update Product set price = :p where id = :id")
+	void updateProduct(@Param("id") int id, @Param("p") double price);
+
+2) Dirty Checking:
+
+@Transactional
+void updateProduct(int id, double price, int qty) {
+    Product p = productDao.findById(id).get();
+    p.setPrice(price);
+    p.setQuantity(qty); // product is dirty and UPDATE SQL is triggered 
+}
+
+==============
+
+Task 1:
+
+Vehicle Rental application
+
+1) Customer
+email
+firstName
+
+2) Driver
+licenenseId
+firstName
+lastName
+phone
+
+3) Vehicle
+REG_NO
+type ==> PETROL | DIESEL
+rentPerDay ==> 5000/-
+
+4) Rental
+rental_id   customer_fk  driver_fk  rent_start_date  rent_end_date  total
+
+Use case:
+1) insert customers
+2) insert drivers
+3) insert vehicles
+4) rent a vehicle
+rental_id   customer_fk  driver_fk  rent_start_date  rent_end_date  total
+123         a@gmail.com  KA343412   20-03-2023          null        0.0
+
+5) Return a Vehcile
+rental_id   customer_fk  driver_fk  rent_start_date  rent_end_date      total
+123         a@gmail.com  KA343412   20-03-2023          21-03-2023      5000.00
+
+
+Task 2:
+Project Management:
+1) Employee ==> email, firstName
+2) Project ==> pid, name, start_date, end_date
+3) Assign Employee to Project
+ EmployeeProject ==>
+ employee_project
+ id email_fk            project_fk      start_date      end_date        role
+ 1  smitha@xi.com       123             1-03-2020       12-8-2021       SR.Developer
+ 2  harry@xi.com         234            3-3-2023        null            TEST LEAD
+
+===================================================
+
+Aspect Oriented Programming ==> AOP 
+1) Aspect
+2) JoinPoint
+3) PointCut
+4) Advice
+
+AOP is to eliminate Cross-cutting concerns
+aspect is a bit of logic which is not a part of main logic but can be used along with main logic and leads to code tangling and code scattering
+
+Examples of Aspects: ==> Logging, Profile, Transaction, Security, ...
+
+public void transferFunds(Account fromAcc, Account toAcc, double amt) {
+    tx.begin(); // transaction code
+    profile.startTime(); // profile
+    log.debug("transaction started"); // log
+    if(context.getRole().equals("MANAGER")) { // security
+        log.debug("manager task"); //log
+             withdraw(fromAcc, amt); // actual logic
+        log.debug("money withdrawn"); // log
+            deposit(toAcc, amt); 
+        log.debug("money deposited");
+            insertIntoTxTable(); 
+        log.debug("transcation complete")
+    }
+    tx.commit();
+    profile.endTime(); //
+}
+
+
+public void placeOrder(Order o) {
+        tx.begin(); // transaction code
+    profile.startTime(); // profile
+    log.debug("transaction started"); // log
+    if(context.getRole().equals("MANAGER")) { // security
+        log.debug("manager task"); //log
+             orderDao.save(o);
+        log.debug("order placed withdrawn"); // log
+            deposit(toAcc, amt); 
+        log.debug("money deposited");
+            insertIntoTxTable(); 
+        log.debug("transcation complete")
+    }
+    tx.commit();
+    profile.endTime(); //
+}
+
+======
+
+Monday & TuesDay
+==> RESTful WS , AOP , ....
+
+
