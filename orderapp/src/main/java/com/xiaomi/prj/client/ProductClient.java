@@ -22,7 +22,7 @@ public class ProductClient implements CommandLineRunner {
 //		listProducts();
 //		singleProduct();
 //		fetchByRange();
-		updateProduct();
+//		updateProduct();
 	}
 
 	private void updateProduct() {

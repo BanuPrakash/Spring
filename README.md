@@ -647,3 +647,90 @@ public void addEmployee(Employee e) {
     // logic for SMS
     // logic for Email
 }
+
+================
+
+Customer class ==> "customers" table
+   String email ==> PK
+ 
+   String firstName;  ==> "first_name" column in table
+
+
+CustomerDao
+
+OrderService ==> CustomerDao 
+insertCustomer and findAll
+
+orders
+
+oid    order_date           customer_fk         total
+1      20-03-2023 4:50      anna@gmail.com      231000
+2      20-03-2023 5:60      smith@gmail.com     2000
+3      21-03-2023  10:30    anna@gmail.com      98811
+
+
+items
+
+item_id  order_fk   product_fk  qty  amount
+1         1         2           1    230000 
+2         1         3           2      1000  
+3         2         3           4      2000
+
+
+=======
+
+Without cascade:
+Assume order has 4 items:
+
+orderDao.save(order);
+itemDao.save(i1);
+itemDao.save(i2);
+itemDao.save(i3);
+itemDao.save(i4);
+
+--
+
+orderDao.delete(order);
+itemDao.delete(i1);
+itemDao.delete(i2);
+itemDao.delete(i3);
+itemDao.delete(i4);
+
+With Cascade:
+@OneToMany(cascade = CascadeType.ALL)
+@JoinColumn(name="order_fk")
+private List<Item> items = new ArrayList<>();
+
+orderDao.save(order); => takes care of saving all items in Order
+orderDao.delete(order); ==> takes care of deleting all items of given order
+
+By using Cascade I can do all operations using OrderDao, no need for ItemDao
+
+Lazy Fetching:
+orderDao.findAll(); ==> select * from orders; 
+items are not fetched
+
+Eager Fetching:
+orderDao.findAll(); 
+select * from orders and select items also from items table...
+
+=========
+
+By Default ManyToOne is EAGER fetching
+By default OneToMany is LAZY loading
+
+order object in JSON:
+
+{
+    "customer": {"email":"anna@gmail.com"},
+    "items" : [
+        {"product": {"id": 2}, "qty": 1},
+        {"product": {"id": 3}, "qty": 4}
+    ]
+}
+
+Dirty Checking of ORM:
+
+within Transactional Boundary / PersitenceContext if entity becomes dirty ORM issues UPDATE Query,
+no need for explicitly invoking update
+
