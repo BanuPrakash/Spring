@@ -3,6 +3,8 @@ package com.xiaomi.prj.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,4 +32,13 @@ public class OrderService {
 		return productDao.save(p); //returned product will have GENERATED PK value
 	}
 	
+	public List<Product> getByRange(double low, double high) {
+		return productDao.getByRange(low, high);
+	}
+	
+	@Transactional
+	public Product updateProduct(int id, double price) {
+		productDao.updateProduct(id, price);
+		return this.getProductById(id);
+	}
 }

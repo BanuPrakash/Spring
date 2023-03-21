@@ -551,6 +551,99 @@ mysql> use Xi_SPRING;
 mysql> desc products;
 mysql> select * from products;
 
+@Embeddable
+class Name implements Serializable {
+    String firstName;
+    String lastName;
+}
 
+@Enitity
+class User {
 
+    @EmbeddedId
+    Name name;
 
+    String email;
+
+    String password;
+}
+
+=========
+
+JP-QL ==> Java Persistence Query Language
+JP-QL is polymorhic, SQL is not
+
+class Product {  ==> products table
+
+}
+
+class Tv extends Product { ==> tv table
+}
+
+class Mobile extends Product { ==> mobile table
+}
+
+SQL:
+select * from products; // gets data only from "products" table
+
+JP-QL:
+from Product; // get rows from products, tv and mobile table
+
+from Object; // get rows from all the tables in the database
+
+================
+
+JDBC
+executeQuery() ==> SELECT SQL ==> ResultSet
+executeUpdate() ==> INSERT, DELETE, UPDATE SQL ==> int
+
+===
+By default methods in JpaRepository for save() and  delete() Transaction is enabled
+Custom methods we need to enable @Transactional
+
+@Transactional is called as Declarative and distributed transaction management
+
+JDBC --> Programatic Tranaction
+
+public void addEmployee(Employee e) {
+    Connection con = null;
+    try {
+        con = DriverManager.getConnection(...);
+        con.setAutoCommit(false);
+        PreparedStatement ps = con.prepareStatement("insert into emp values (?,?,?));
+        ps.setInt(1, e.getEmployeeId());
+        ps.setString(2, e.getFirstName());
+        //
+        ps.executeUpdate();
+        con.commit();
+    } catch(SQLException ex) {
+        ...
+        con.rollback();
+    } finally {
+        con.close();
+    }
+}
+
+Hibernate without Spring:
+
+public void addEmployee(Employee e) {
+    Session session = sessionFactroy.getSession();
+    Transaction tx = session.beginTransaction();
+    try {
+        session.persiste(e);
+        tx.commit();
+    } catch(HibernateException ex) {
+        tx.rollback();
+    }
+}
+
+Declarative Transaction:
+
+@Transactional
+public void addEmployee(Employee e) {
+    // logic for JDBC
+    // logic to use REdis
+    // logic to use Kinises Stream
+    // logic for SMS
+    // logic for Email
+}
