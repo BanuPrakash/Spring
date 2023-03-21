@@ -516,3 +516,7 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 }
 
 
+==========================
+
+Day 2
+
