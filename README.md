@@ -517,6 +517,40 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 
 
 ==========================
+Spring Container: LifeCycle Management and Dependency Injection ==> Spring Core, Context
+ApplicationContext: where beans are managed 
+@Component, @Repository, @Configuration, @Controller, @RestController, @Service
+
+ORM Module: Spring Data Jpa
+HikariCP for database connection pool ==> DataSource
+Hibernate as JPA Vendor
+
+ORM --> 
+PersistenceContext: An environment where entities are managed [ @Entity ]
+EntityManager: class to manage PersistenceContext
+EntityManagerFactory: to create EntityManager { specify which database to use and ORM provider to use}
+
+Spring Data JPA --> Simplifies using ORM
+we provide url, driver, username, pwd in application.properties
+Spring Data JPA creates DataSource {pool of db connection}, EntityManage, PersistenceContext
+
+interface JpaRepository<T,ID> {
+    methods for CRUD operations
+}
+
+@Repository class is created by ByteCode Instrumentation libraries.
 
 Day 2
+
+$ docker exec -it local-mysql bash
+bash-4.4# mysql -u root -p 
+Enter password: Welcome123
+
+mysql> use Xi_SPRING;
+
+mysql> desc products;
+mysql> select * from products;
+
+
+
 
