@@ -1,5 +1,5 @@
-# Spring Training
 
+# Spring Training
 Banuprakash C
 
 Full Stack Architect, 
@@ -849,7 +849,232 @@ public void placeOrder(Order o) {
 
 ======
 
-Monday & TuesDay
-==> RESTful WS , AOP , ....
+Day 3
+
+Spring Framework and Spring Boot
+Metadata --> XML and Annotation
+
+@Component
+@Repository --> Persistence Code
+By using JpaRepository interface we don't need @Respoistory class ==> Spring Data Jpa creates instance of this interface
+@Service ==> Facade on top of all Business logic and persistence logic ==> code generally in @Service are atomic and transactional ==> Combine many DAO and business calls into one method which is atomic
+@Configuration and @Bean ==> Factory method 
+
+ORM and JPA ==> Hibernate as ORM provider ==> Simplify CRUD operations on top of JDBC
+* PersitenceContext is an environment where entities are managed by an interface called EntityManager.
+
+EntityManager itself is created using EntityManagerFactory { which uses DataSource --> Pool of DB connections and ORM Provider --> Hiberante}
+
+Annotations of JPA:
+1) @Entity --> Required
+2) @Table --> Optional -> to map class to database table; if not provided class name will be the table name.
+3) @Id --> to mark a Primary Key --> Required
+4) @Column -> Optational -> to map field to database column
+5) @GeneratedValue ==> Optional ==> to specify how PK is managed [ assigned, auto increment, sequence]
+
+Pre-defined methods like : save(), findById(), findaAll(), delete()...
+if we provide methods in JpaRepository like
+findByFieldName(); --> select * from <tablename> where fieldName = ?
+We can use @Query to write custom methods
+
+Mapping:
+@OneToMany
+@ManyToOne
+@JoinColumn
+Cascade, and EAGER/LAZY fetching
 
 
+
+Rental * <--> 1 Vehicle
+
+Rental * <--> 1 Driver
+
+
+rentals
+
+id  date        vehicle_fk  driver_fk
+1   30          KA12A1344       a
+2   5           KA12A1344       b
+3   6           UP12H9823       a
+
+
+
+OneToOne
+
+employees
+
+eid         name        email               laptop_id
+1           Roger       roger@ab.com            9899
+2           Smitha      smitha@ab.com           8900
+3           Peter       peter@ab.com            2323
+
+laptops
+
+serial_no   make        RAM   Storage
+2323        Macbook     ..
+
+
+========================================
+
+RESTful Web Services
+
+REST ==> REpresentational State Transfer, architectural pattern for distributed hypermedia systems.
+Roy Fielding --> year 2000
+
+Web applications:
+1) Server Side Rendering  --> Traditional web application
+2) Client Side Rendering --> server sends different formats of "state of data";
+    Advantages: Heterogenous clients like mobile / web /desktop/ other applications
+    Payload between client and server is lightweight
+
+Resource: Any information that we can name can be resource [ image / file / database / printer]
+
+Resources should be well named:
+1) Use plural nouns to represent resources [ customers/ products/ orders]
+2) Collection
+    * server managed directory of resources [ products/ customers]
+    http://amazon.com/products
+3) store
+    * client managed resource [ playlist / wishlist /cart]
+    http://spotify.com/users/banu/playlist
+4) Controller
+    * Procedural cincept / like executable functions
+    http://spotify.com/users/banu/playlist/play
+
+Identify Resources using URL
+Perfomr actions using HTTP methods
+
+1)
+GET
+http://amazon.com/mobiles
+
+to fetch all mobiles
+
+2)
+GET
+http://amazon.com/mobiles/iphone14
+
+get a single resource form "mobiles" resource colliection ==> "iphone14" 
+
+GET
+http://localhost:8080/products/2
+
+get a product whose id is "2"
+
+use PathParameter [/identity] for getting single resource
+
+3)
+GET
+http://amazon.com/mobiles?page=1&size=20
+
+Paginating mobiles
+
+GET
+http://amazon.com/mobiles?company=Xiaomi
+
+for Filter use QueryParameter / RequestParameter [ ? ]
+
+4)
+POST
+http://amazon.com/mobiles
+
+Payload contains a new Mobile which has to be added to "mobiles" resource
+
+5) 
+PUT
+http://amazon.com/mobiles/8
+
+Payload contains a new data for Mobile with ID "8" which has to be updated in "mobiles" resource
+
+{
+    name:"...",
+    "telephone": "",
+    "skills": [...]
+}
+
+5) 
+
+PATCH
+http://amazon.com/mobiles/8
+
+also for update ==> but partial update, not major update
+
+like move song from 3rd position to 1st position in playlist, remove a song from playlist
+
+http://localhost:8080/api/employees/5
+id, name, telephone, projects, skills
+[
+
+    {"op": "replace", "path":"/telephone", "value":"+91 9823232323"},
+    {"op": "add", "path":"/skills/0", "value":"Building REST using Spring Boot"}
+]
+
+
+6)
+DELETE
+http://amazon.com/mobiles/8
+
+deleta a mobile whose id is "8" ==> Rare endpoint ==> prefer deleteing using backend or traditonal way
+
+Guiding Principles of  REST:
+1) Uniform Interface
+    Indentification of resources
+2) Client-Server ==> Design Pattern to enforce seperation of concerns
+3) Stateless ==> No Session Tracking; every request from client should be treated as a new request; no converstational state
+4) Cacheable
+5) Layered System ==> composed of hierarchial layers 
+
+========
+
+Spring Boot provides "web" dependency
+<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+
+adding web dependecy, will configure:
+1) Embedded TomcatWebServer 
+2) HttpMessageConvertor for Java <--> JSON ==> Jackson library
+  Jackson, Jettison, GSON, Moxy are librarires for Java <--> JSON 
+
+    class name is ObjectMapper
+```
+Product p = Product.builder()
+				.id(11)
+				.name("iPhone 14")
+				.price(120000.00)
+				.quantity(100)
+				.build();
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(p);
+		System.out.println(json);
+```
+3) Configures Spring MVC ==> Model View Controller for Traditional and RESTful web application
+
+DispatcherSErvlet is the FrontController ==> Intercepts all request coming from client
+
+HandlerMapping has list of resources to be invoked for different URLs
+
+@Controller
+@RequestMapping("/register")
+public class RegisterServlet {
+
+    @PostMapping()
+    m1() {
+
+    }
+}
+
+
+@RestController
+public class ProductServlet {
+
+    @GetMapping()
+    m1() {}
+
+    @PostMapping()
+    m2() {}
+}
+
+@ResponseBody ==> is for Java to JSON { optional}
+@RequestBody  ==> is for JSON to Java

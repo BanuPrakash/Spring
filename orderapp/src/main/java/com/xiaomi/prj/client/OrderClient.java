@@ -21,7 +21,7 @@ public class OrderClient implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 //		placeOrder();
-		getOrders();
+//		getOrders();
 	}
 
 	private void getOrders() {
