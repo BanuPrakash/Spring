@@ -1117,3 +1117,22 @@ REQUEST PARAMS:
 http://localhost:8080/api/products?low=50000&high=350000
 
 
+===
+
+POST : http://localhost:8080/api/orders
+
+Headers:
+Accept: text/plain
+Content-type: application/json
+
+Body(raw)
+{
+    "customer": {"email": "anna@gmail.com"},
+    "items": [
+        {"product": {"id": 4}, "qty": 2},
+         {"product": {"id": 5}, "qty": 1}
+    ]
+}
+--
+
+GET : http://localhost:8080/api/orders

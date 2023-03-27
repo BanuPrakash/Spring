@@ -29,6 +29,6 @@ public class Customer {
 	private String firstName;
 	
 	@Builder.Default
-	@OneToMany(mappedBy = "customer")
+	@OneToMany
 	private List<Order> orders = new ArrayList<>();
 }
