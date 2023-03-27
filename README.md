@@ -1161,7 +1161,12 @@ Response:
         "TypeScript"
     ]
 }
+https://jsonpatch.com/
 
-  {"op":"move", "path":"/skills", "from":"/Java/4"},
- {"op":"remove", "path": "/telephone"}
+The patch operations supported by JSON Patch are “add”, “remove”, “replace”, “move”, “copy” and “test”. 
+
+Aspect Oriented Programming --> AOP
+Aspect --> bit of code which can be used along with main logic; not a part of main logic ==> Loggers, Transaction, Security, Profile
+
+https://docs.spring.io/spring-framework/docs/2.0.x/reference/aop.html
 
