@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,10 +26,16 @@ public class ProductController {
 	private OrderService service;
 	
 	//GET http://localhost:8080/api/products
+	//GET http://localhost:8080/api/products?low=5000&high=50000
 	// returned List<Product> is given to Jackson a HttpMessageConvertor ==> JSON
 	@GetMapping()
-	public List<Product> getProducts() {
-		return service.getProducts();
+	public List<Product> getProducts(@RequestParam(name="low", defaultValue = "0.0") double low,
+			@RequestParam(name="high", defaultValue = "0.0") double high) {
+		if(low == 0.0 && high == 0.0) {
+			return service.getProducts();
+		} else {
+			return service.getByRange(low, high);
+		}
 	}
 	
 	//GET http://localhost:8080/api/products/4

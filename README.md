@@ -1078,3 +1078,42 @@ public class ProductServlet {
 
 @ResponseBody ==> is for Java to JSON { optional}
 @RequestBody  ==> is for JSON to Java
+
+install POSTMAN
+
+POST: http://localhost:8080/api/products
+
+Headers:
+Accept: application/json
+content-type: application/json
+
+Body (raw)
+{
+    "name": "Wacom",
+    "price": "8900.00",
+    "quantity": 100
+}
+
+Send:
+check status code to be 201
+and returned product should have inserted PK also
+
+
+DELETE: http://localhost:8080/api/products/5
+
+Response
+Deleted product with id 5
+
+PUT: http://localhost:8080/api/products/5
+{
+    "name": "Wacom",
+    "price": "9430.00",
+    "quantity": 100
+}
+
+============
+
+REQUEST PARAMS:
+http://localhost:8080/api/products?low=50000&high=350000
+
+
