@@ -1170,3 +1170,12 @@ Aspect --> bit of code which can be used along with main logic; not a part of ma
 
 https://docs.spring.io/spring-framework/docs/2.0.x/reference/aop.html
 
+====
+
+Exception Handling, Validation, Caching, Documentation, Metrics
+
+==
+
+Try adding RESTful ws to Vehicle Rental and Employee management project...
+
+
