@@ -1136,3 +1136,32 @@ Body(raw)
 --
 
 GET : http://localhost:8080/api/orders
+
+JSON PATCH Operations
+
+PATCH: http://localhost:8080/api/employees
+Headers:
+Accept: application/json
+Content-type: application/json-patch+json
+
+body(raw):
+
+[
+    {"op":"replace", "path":"/telephone", "value":"+91762242323"},
+    {"op":"add", "path":"/skills/0", "value":"Spring Boot"}
+]
+Response:
+{
+    "id": 123,
+    "telephone": "+91762242323",
+    "skills": [
+        "Spring Boot",
+        "Java",
+        "PHP",
+        "TypeScript"
+    ]
+}
+
+  {"op":"move", "path":"/skills", "from":"/Java/4"},
+ {"op":"remove", "path": "/telephone"}
+
