@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xiaomi.prj.entity.Product;
+import com.xiaomi.prj.exceptions.ResourceNotFoundException;
 import com.xiaomi.prj.service.OrderService;
 
 @RestController
@@ -40,7 +41,7 @@ public class ProductController {
 	
 	//GET http://localhost:8080/api/products/4
 	@GetMapping("/{pid}")
-	public @ResponseBody Product getProduct(@PathVariable("pid") int id) {
+	public @ResponseBody Product getProduct(@PathVariable("pid") int id) throws ResourceNotFoundException {
 		return service.getProductById(id);
 	}
 	
@@ -52,7 +53,7 @@ public class ProductController {
 	}
 	
 	@PutMapping("/{pid}")
-	public Product updateProduct(@PathVariable("pid") int id, @RequestBody Product p) {
+	public Product updateProduct(@PathVariable("pid") int id, @RequestBody Product p) throws ResourceNotFoundException {
 		service.updateProduct(id, p.getPrice());
 		return this.getProduct(id);
 	}

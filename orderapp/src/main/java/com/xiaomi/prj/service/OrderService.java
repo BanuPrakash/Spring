@@ -13,6 +13,7 @@ import com.xiaomi.prj.dao.ProductDao;
 import com.xiaomi.prj.entity.Item;
 import com.xiaomi.prj.entity.Order;
 import com.xiaomi.prj.entity.Product;
+import com.xiaomi.prj.exceptions.ResourceNotFoundException;
 
 @Service
 public class OrderService {
@@ -51,12 +52,13 @@ public class OrderService {
 		return productDao.findAll(); 
 	}
 	
-	public Product getProductById(int id) {
+	public Product getProductById(int id) throws ResourceNotFoundException {
 		Optional<Product> optProduct =  productDao.findById(id);
 		if(optProduct.isPresent()) {
 			return optProduct.get();
 		}
-		else return null;
+		else  
+			throw new ResourceNotFoundException("Product with id :" + id + " doesn't exist!!!" );
 	}
 	
 	public Product addProduct(Product p) {
@@ -68,7 +70,7 @@ public class OrderService {
 	}
 	
 	@Transactional
-	public Product updateProduct(int id, double price) {
+	public Product updateProduct(int id, double price) throws ResourceNotFoundException {
 		productDao.updateProduct(id, price);
 		return this.getProductById(id);
 	}

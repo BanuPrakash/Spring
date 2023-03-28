@@ -1176,6 +1176,53 @@ Exception Handling, Validation, Caching, Documentation, Metrics
 
 ==
 
-Try adding RESTful ws to Vehicle Rental and Employee management project...
+Recap
+
+RESTful Web Services
+@RestController
+binding URL:@RequestMapping -> URL to Controller
+
+HTTP Methods to Java method binding:
+@GetMapping()
+@PostMapping()
+@PutMapping()
+@DeleteMapping()
+@PatchMapping()
+
+@PathVariable ==> PathParameter
+@RequestParam ==> QueryParameter
+
+Accept:application/json
+@ResponseBody ==> Java to JSON; optional in @RestController 
+HttpMessageConvertor is used to convert java to representation based on Accept header;
+Jackson library is default configured for Java<--->JSON
+
+Content-type:application/json
+@RequestBody ==> JSON --> Java; Required
+
+ResponseEntity --> use this in case if we need additional headers to be passed as payload along with entity
+
+SpringMVC ==> DispatcherServlet --> HandlerMapping --> returns method of @Controller or @RestController to be invoked for a Given HTTP method and URL
+
+Day 4
+
+Exception Handling in RestController.
+
+ResourcenotFoundException.java
+LogAspect.java
+OrderService.java
+ProductController.java
+GlobalExceptionHandler.java
+
+
+
+
+
+
+
+
+
+
+
 
 

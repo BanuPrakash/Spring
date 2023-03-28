@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.xiaomi.prj.entity.Product;
+import com.xiaomi.prj.exceptions.ResourceNotFoundException;
 import com.xiaomi.prj.service.OrderService;
 
 @Component
@@ -25,7 +26,7 @@ public class ProductClient implements CommandLineRunner {
 //		updateProduct();
 	}
 
-	private void updateProduct() {
+	private void updateProduct() throws ResourceNotFoundException {
 		service.updateProduct(4, 62000.00);
 	}
 
@@ -36,7 +37,7 @@ public class ProductClient implements CommandLineRunner {
 		}
 	}
 
-	private void singleProduct() {
+	private void singleProduct() throws ResourceNotFoundException {
 		Product p = service.getProductById(1);
 		System.out.println(p);
 	}
