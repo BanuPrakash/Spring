@@ -1246,8 +1246,180 @@ spring-boot-starter-test provides:
 https://jsonpath.com/
 4) Hamcrest --> matchers for assertion
 
+Caching
+* Client-side Caching
+1) Http headers Cache-Control
+cache-control max-age=3600
+
+2) ETag
+The ETag (or entity tag) HTTP response header is an identifier for a specific version of a resource. It lets caches be more efficient and save bandwidth, as a web server does not need to resend a full response if the content was not changed
+```
+// GET http://localhost:8080/api/products/cache/4
+	@GetMapping("/cache/{pid}")
+	public ResponseEntity<Product> getProductCache(@PathVariable("pid") int id) throws ResourceNotFoundException {
+		Product p =  service.getProductById(id);
+		return ResponseEntity.ok().eTag(Long.toString(p.hashCode())).body(p);
+	}
+```
+
+POSTMAN
+GET http://localhost:8080/api/products/cache/4
+
+Response:
+ETag: "1870871232"
+
+Body:
+{
+    "id": 4,
+    "name": "Redme X-12",
+    "price": 62000.0,
+    "quantity": 98
+}
+
+---
+
+Next Request:
+POSTMAN
+GET http://localhost:8080/api/products/cache/4
+
+Headers:
+ACCEPT:
+CONTENT-TYPE:
+If-none-Match: "1870871232"
+
+Response:
+304: not modified
+Body: blank
 
 
+Product.java
+Using JPA @Version
+@Version
+private int ver;
+
+
+```
+@GetMapping("/cache/{pid}")
+	public ResponseEntity<Product> getProductCache(@PathVariable("pid") int id) throws ResourceNotFoundException {
+		Product p =  service.getProductById(id);
+		return ResponseEntity.ok().eTag(Long.toString(p.getVer())).body(p);
+	}
+
+```
+
+id name  price  qty    ver
+1  A     3434   343     0
+
+Any updates will keep incrementing version
+
+Version column will also be used internally by JPA to handle concurreny issues
+
+First Commit wins, by default last commit wins
+User 1:
+1  A     3434   343     0
+
+User 1 purchases 43 products
+
+update qty = qty - 43, ver = ver + 1 where id = 1 and ver  = 0 
+
+User 1 Fails
+User 2:
+1  A     3434   343     0
+
+User 2 purchases 3 products
+
+update qty = qty - 3, ver = ver + 1 where id = 1 and ver = 0
+1  A     3434   340     1
+-------------------
+
+* Server Side Caching
+
+
+1) JPA first level Cache
+
+@Transactional
+public void doTask() {
+    Product p1 = productDao.findById(1, Product.class).get(); // SELECT Query
+    //
+    Product p2 = productDao.findById(2, Product.class).get(); // SELECT Query
+
+    ///
+    Product p3 = productDao.findById(1, Product.class).get(); // gets from Cache --> available in PersistenceContext
+}
+
+2) JPA Second level Cache: --> cache @ application level used between users for multiple requests
+Ehache, JBossSwarmCache, ...
+
+3) Spring CacheManager
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+	
+By Default ConcurrentMapCacheManager is used by default --> In Memory.
+Can't be used in Cluster environment, many instances running on docker, can't be used between micro-services
+
+Steps:
+1) enable caching in any Configuration file
+@EnableCaching
+@SpringBootApplication
+public class OrderappApplication {
+
+2) 
+```
+@Cacheable(value="productCache", key="#id")
+	@GetMapping("/cache/{pid}")
+	public Product getProductCache(@PathVariable("pid") int id)
+
+    SPeL #
+    Key will be product "id" : value will be the returned Product from method
+
+    @CachePut(value="productCache", key="#id")
+	@PutMapping("/{pid}")
+	public Product updateProduct(@PathVariable("pid") int id, @RequestBody Product p) throws ResourceNotFoundException {
+		service.updateProduct(id, p.getPrice());
+		return this.getProduct(id);
+	}
+    // avoid
+	@CacheEvict(value="productCache", key="#id")
+	@DeleteMapping("/{id}")
+	public String deleteProduct(@PathVariable("id") int id) {
+		//
+		return "Deleted product with id " + id;
+	}
+```
+
+Schedule a Task to remove entries from cache.
+
+CRON
+https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/support/CronExpression.html
+
+```
+
+@EnableCaching
+@EnableScheduling
+@SpringBootApplication
+public class OrderappApplication {
+	
+	@Autowired
+	CacheManager cacheManager;
+	
+	public static void main(String[] args) {
+		SpringApplication.run(OrderappApplication.class, args);
+	}
+
+	//@Scheduled(fixedDelay = 2000)
+	@Scheduled(cron ="0 0/30 * * * *")
+	public void clearCache() {
+		System.out.println("Cache Cleared!!!");
+		cacheManager.getCacheNames().forEach(cache -> {
+			cacheManager.getCache(cache).clear();
+		});
+	}
+}
+
+```
 
 
 
