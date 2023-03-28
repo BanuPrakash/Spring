@@ -2,9 +2,12 @@ package com.xiaomi.prj.api;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +25,7 @@ import com.xiaomi.prj.service.OrderService;
 
 @RestController
 @RequestMapping("api/products")
+@Validated
 public class ProductController {
 	@Autowired
 	private OrderService service;
@@ -48,7 +52,7 @@ public class ProductController {
 	//POST http://localhost:8080/api/products
 	// @RequestBody is to specify that JSON to Java conversion is required
 	@PostMapping()
-	public ResponseEntity<Product> addProduct(@RequestBody Product p) {
+	public ResponseEntity<Product> addProduct(@RequestBody @Valid Product p) {
 		return new ResponseEntity<Product>(service.addProduct(p), HttpStatus.CREATED);
 	}
 	
