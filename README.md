@@ -1357,7 +1357,7 @@ Ehache, JBossSwarmCache, ...
 			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
 	
-By Default ConcurrentMapCacheManager is used by default --> In Memory.
+By Default ConcurrentMapCacheManager [ ConditionalBean ] is used by default --> In Memory.
 Can't be used in Cluster environment, many instances running on docker, can't be used between micro-services
 
 Steps:
@@ -1421,8 +1421,91 @@ public class OrderappApplication {
 
 ```
 
+docker run --name -p 6379:6379 some-redis -d redis
 
+<!-- Cache -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+<!-- Cache End -->
 
+application.properties
+spring.redis.port=6379
+spring.redis.host=127.0.0.1
 
+Serialization is a process of replicating the state to a stream
+public class Product implements Serializable{
 
+Not Working: //TODO
+```
+@Bean
+	public RedisCacheConfiguration cacheConfiguration() {
+	    return RedisCacheConfiguration.defaultCacheConfig()
+	      .entryTtl(Duration.ofMinutes(60))
+	      .disableCachingNullValues()
+	      .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+	}
+```
+
+Documentation of APIs:
+
+1) RAML
+
+config.yaml
+/books:
+  /{bookTitle}
+    get:
+      queryParameters:
+        author:
+          displayName: Author
+          type: string
+          description: An author's full name
+          example: Mary Roach
+          required: false
+        publicationYear:
+          displayName: Pub Year
+          type: number
+          description: The year released for the first time in the US
+          example: 1984
+          required: false
+        rating:
+          displayName: Rating
+          type: number
+          description: Average rating (1-5) submitted by users
+          example: 3.14
+          required: false
+        isbn:
+          displayName: ISBN
+          type: string
+          minLength: 10
+          example: 0321736079
+    put:
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true
+
+2) Swagger --> OpenAPI Rest Document
+
+<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-ui</artifactId>
+    <version>1.6.15</version>
+</dependency>
+
+http://localhost:8080/v3/api-docs
+
+http://localhost:8080/swagger-ui/index.html
+
+=============
+
+Metrics, HATEOAS, Spring Data Rest, EntityGraph, Specification,...
 
