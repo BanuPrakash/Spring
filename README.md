@@ -1620,6 +1620,8 @@ Alert/ Graph
 
 Data / Graph
 http_server_requests_seconds_count
+http_server_requests_seconds_count{uri="/api/products"}
+
 
 Grafana --> Dashboard
 
@@ -1638,6 +1640,114 @@ URL: http://host.docker.internal:9090
 Save&Test
 
 ------
+
+JDK 17 with Spring boot 3 --> Observability Push Metrics
+
+=========================================
+
+HATEOAS --> Hypermedia As The Extension Of Application State
+https://martinfowler.com/articles/richardsonMaturityModel.html
+
+Level 3 RESTful WS - Hypermedia Controls
+
+```
+GET /doctors/mjones/slots?date=20100104&status=open 
+
+Response:
+
+<openSlotList>
+  <slot id = "1234" doctor = "mjones" start = "1400" end = "1450">
+     <link rel = "/linkrels/slot/book" 
+           uri = "/slots/1234"/>
+  </slot>
+  <slot id = "5678" doctor = "mjones" start = "1600" end = "1650">
+     <link rel = "/linkrels/slot/book" 
+           uri = "/slots/5678"/>
+  </slot>
+</openSlotList>
+```
+---
+
+Request 2:
+```
+POST /slots/1234 HTTP/1.1
+
+<appointmentRequest>
+  <patient id = "jsmith"/>
+</appointmentRequest>
+
+Response 
+
+<appointment>
+  <slot id = "1234" doctor = "mjones" start = "1400" end = "1450"/>
+  <patient id = "jsmith"/>
+  <link rel = "cancel appointment"
+        uri = "/slots/1234/appointment"/>
+  <link rel = "/addTest"
+        uri = "/slots/1234/appointment/tests"/>
+  <link rel = "self"
+        uri = "/slots/1234/appointment"/>
+  <link rel = "/linkrels/appointment/changeTime"
+        uri = "/doctors/mjones/slots?date=20100104&status=open"/>
+  <link rel = "/linkrels/appointment/updateContactInfo"
+        uri = "/patients/jsmith/contactInfo"/>
+  <link rel = "/linkrels/help"
+        uri = "/help/appointment"/>
+</appointment>
+
+```
+
+Spring Boot:
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+</dependency>
+
+WebMvcLinkbuilder => Programatically add links to application state.
+
+RepresentationModel ==> Application State + Links
+EntityModel, CollectionModel extends RepresentationModel
+DEfault is HAL --> Hypermedia as Language
+
+To get templates:
+@EnableHypermediaSupport(type = HypermediaType.HAL_FORMS)
+		
+
+----
+
+Spring Data REST 
+* RESTfulWS with HATEOAS + Spring Data JPA
+* No need to create RestController
+* Spring Data Rest is going to create endpoints based on JpaRepository
+```
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+```
+
+http://localhost:8080/
+
+http://localhost:8080/products
+http://localhost:8080/products/search
+http://localhost:8080/products/search/findByQuantity?qty=100
+http://localhost:8080/products/search/getByRange?l=500&h=10000
+
+When using Spring Data JPA don't use @RestController
+* instead use @BasePathAwareController --> understands already available endpoints by Spring Data JPA,
+ we can override those endpoints
+
+* @RepositoryRestController to add more endpoints
+
 
 
 

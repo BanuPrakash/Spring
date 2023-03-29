@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +32,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 @RestController
 @RequestMapping("api/products")
 @Validated
@@ -39,6 +42,19 @@ public class ProductController {
 	@Autowired
 	private OrderService service;
 
+	@GetMapping("/hateoas/{pid}")
+	public ResponseEntity<EntityModel<Product>> getProductHateoas(@PathVariable("pid") int id) throws ResourceNotFoundException {
+		
+		Product p =  service.getProductById(id);
+		EntityModel<Product> entityModel = EntityModel.of(p, 
+				linkTo(methodOn(ProductController.class).getProductHateoas(id)).withSelfRel(),
+				linkTo(methodOn(ProductController.class).getProductHateoas(id)).withRel("").
+				andAffordance(afford(methodOn(ProductController.class).updateProduct(id, null))).withRel("update").
+				andAffordance(afford(methodOn(ProductController.class).deleteProduct(id))).withRel("delete")
+				);
+		return ResponseEntity.ok(entityModel);
+	}
+	
 	
 	@Cacheable(value="productCache", key="#id")
 	@GetMapping("/cache/{pid}")
@@ -99,8 +115,9 @@ public class ProductController {
 	// avoid
 	@CacheEvict(value="productCache", key="#id")
 	@DeleteMapping("/{id}")
-	public String deleteProduct(@PathVariable("id") int id) {
+	public Product deleteProduct(@PathVariable("id") int id) throws ResourceNotFoundException {
+		Product p = getProduct(id);
 		//
-		return "Deleted product with id " + id;
+		return p;
 	}
 }
