@@ -1606,7 +1606,11 @@ Custom Healt indicators:
 * HealthContributer
 * CompositeHealthContributor ==> distributed system {db, redis, email,...}
 
-=====
+===============
 
-Resume @ 11:05
+Promethues - Monitoring system & time series database
+
+
+
+
 
