@@ -1563,3 +1563,40 @@ http://localhost:8080/swagger-ui/index.html
 RestTemplate:
 Rest Template is used to create applications that consume RESTful Web Services.
 Alternative -> WebClient [spring flux ], HttpClient
+
+======
+
+Metrics
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+Health Check:
+A distributed system is componsed of many parts like database, queues, redis, ... services
+
+Status of our application running: service is UP/DOWN, slow..
+
+
+actuator comes with many pre-defined health indicators like:
+* DataSourceHealthIndicator
+* MongoHealthIndicator
+* RedisHealthIndicator
+* CassandraHealthIndicator
+...
+
+application.properties
+management.endpoint.health.show-details=always
+management.endpoints.web.exposure.include=*
+
+http://localhost:8080/actuator
+http://localhost:8080/actuator/health
+http://localhost:8080/actuator/caches
+http://localhost:8080/actuator/metrics
+http://localhost:8080/actuator/metrics/http.server.requests
+http://localhost:8080/actuator/metrics/jvm.threads.peak
+http://localhost:8080/actuator/metrics/jvm.memory.used
+
+https://httpd.apache.org/docs/2.4/programs/ab.html
+
+$ ab -n 1500 -c 100 http://localhost:8080/api/products
