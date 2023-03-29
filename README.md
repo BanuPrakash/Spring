@@ -1600,3 +1600,13 @@ http://localhost:8080/actuator/metrics/jvm.memory.used
 https://httpd.apache.org/docs/2.4/programs/ab.html
 
 $ ab -n 1500 -c 100 http://localhost:8080/api/products
+
+Custom Healt indicators:
+* HealthIndicator
+* HealthContributer
+* CompositeHealthContributor ==> distributed system {db, redis, email,...}
+
+=====
+
+Resume @ 11:05
+
