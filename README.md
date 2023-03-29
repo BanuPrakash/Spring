@@ -1560,3 +1560,6 @@ http://localhost:8080/swagger-ui/index.html
 
 =======================
 
+RestTemplate:
+Rest Template is used to create applications that consume RESTful Web Services.
+Alternative -> WebClient [spring flux ], HttpClient
