@@ -1,18 +1,17 @@
 package com.xiaomi.prj;
 
-import java.time.Duration;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 
 @EnableCaching
 @EnableScheduling
@@ -34,4 +33,16 @@ public class OrderappApplication {
 			cacheManager.getCache(cache).clear();
 		});
 	}
+	
+	@Bean
+	 public OpenAPI customOpenAPI() {
+	     return new OpenAPI()
+	          .info(new Info()
+	          .title("Order application API")
+	          .version("1.0")
+	          .description("End points for Orderapplication")
+	          .termsOfService("http://swagger.io/terms/")
+	          .license(new License().name("Apache 2.0").url("http://springdoc.org")));
+	    }
+	
 }

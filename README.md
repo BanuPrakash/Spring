@@ -1507,5 +1507,56 @@ http://localhost:8080/swagger-ui/index.html
 
 =============
 
-Metrics, HATEOAS, Spring Data Rest, EntityGraph, Specification,...
+Day 5
+
+@ControllerAdvice and @ExceptionHandler for Global exception handling @Controller and @RestController
+
+@Aspect --> is not aware of HttpRequest and HttpResponse
+
+javax.validation.constraints 
+@Min, @Max, @Range, @NotBlank, @Pattern, ....
+
+@Validated, @Valid
+
+==> MethodArgumentNotValidException
+
+UnitTesting controller by mocking dependencies [Mockito]
+jsonPath, Hamcrest, Junit
+
+@WebMvcTest() ===> Spring Container only has Spring MVC loaded and not @Service, @Respository,...
+MockMvc ==> CRUD operations using get(), post(), put(),...
+
+@MockBean
+
+----
+
+Caching
+* Cache-Control: max-age(36000)
+* ETag will be sent as response from server along with data;
+use If-None-Match header with Etag sent for further requests; Server sends new payload only if change in ETag value; else it sends 302 Not Modifed header with no payload
+
+* Server - Side Caching:
+Default --> ConcurrentMapCacheManager
+@EnableCaching, @Cacheable, @CachePut, @CacheEvict
+@EnableScheduling, @Scheduled {fixedRate, fixedDuration, CRON expression}
+
+* Redis
+once redis is configured; default "ConcurrentMapCacheManager" will not be available instead we will have RedisCacheManager
+
+Redis Client:
+
+NodeJS --> redis-commander
+
+$ npx redis-commander
+
+------
+
+API documentation ==> RAML { declarative --> yaml}, OpenApi/Swagger {creates docs out of the box, just need to include dependency}
+
+http://localhost:8080/v3/api-docs
+
+http://localhost:8080/swagger-ui/index.html
+
+
+=======================
 

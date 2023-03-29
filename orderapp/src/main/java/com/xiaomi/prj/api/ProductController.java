@@ -26,9 +26,15 @@ import com.xiaomi.prj.entity.Product;
 import com.xiaomi.prj.exceptions.ResourceNotFoundException;
 import com.xiaomi.prj.service.OrderService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("api/products")
 @Validated
+@Tag(name="Products", description = "Product APIs")
 public class ProductController {
 	@Autowired
 	private OrderService service;
@@ -36,6 +42,10 @@ public class ProductController {
 	
 	@Cacheable(value="productCache", key="#id")
 	@GetMapping("/cache/{pid}")
+	@Operation(summary = "Get Product by its id")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found product for given ID")
+	})
 	public Product getProductCache(@PathVariable("pid") int id) throws ResourceNotFoundException {
 		System.out.println("Cache Miss!!");
 		try {
