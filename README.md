@@ -1609,7 +1609,35 @@ Custom Healt indicators:
 ===============
 
 Promethues - Monitoring system & time series database
+<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+</dependency>
+http://localhost:8080/actuator/prometheus
 
+http://localhost:9090/
+Alert/ Graph
+
+Data / Graph
+http_server_requests_seconds_count
+
+Grafana --> Dashboard
+
+localhost:3000
+
+username:admin
+password:admin
+
+<<Skip>>
+
+---
+
+DataSource ==> New
+URL: http://host.docker.internal:9090
+
+Save&Test
+
+------
 
 
 
