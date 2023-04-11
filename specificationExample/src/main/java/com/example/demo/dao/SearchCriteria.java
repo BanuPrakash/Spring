@@ -2,9 +2,9 @@ package com.example.demo.dao;
 
 
 public class SearchCriteria {
-    private String key;
-    private Object value;
-    private SearchOperation operation;
+    private String key; // year, genre
+    private Object value; // 2018 , "comedy"
+    private SearchOperation operation; // LESS_THAN, "EQUAL"
 
     public SearchCriteria() {
     }

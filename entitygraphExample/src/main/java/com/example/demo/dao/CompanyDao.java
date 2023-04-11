@@ -13,5 +13,4 @@ public interface CompanyDao extends JpaRepository<Company, Long>{
 	@EntityGraph(type=EntityGraphType.FETCH, value="companyWithDepartmentsAndEmployeesAndOfficesGraph")
 	Company getById(@Param("id") long id) ;
 	
-	
 }

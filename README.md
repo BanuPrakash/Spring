@@ -1751,6 +1751,243 @@ When using Spring Data JPA don't use @RestController
 ================================
 
 
+So Far:
+
+Spring Boot, JPA, Restful WS, AOP, Validation, @ControllerAdvice
+Caching -> Etag, ConcurrentCacheManager, RedisCacheManager
+Metrics ==> Actuator, Prometheus, Graffana
+OpenAPI ==> rest documentation
+HATEOAS ==> Level 3 RESTful WS, Spring Data Rest
+
+====================
+
+src/main/resources
+schema.sql
+    DDL --> create, alter, drop
+data.sql
+    DML --> insert, delete, update
+
+
+
+
+companyDao.findById(Company.class, 1);
+
+select * from companies where id = 1;
+EAGER fetch:
+select * from departments where company_id = 1;
+select * from cars where company_id = 1;
+select * from employees where department_id = ? // N Hits
+
+LAZY:
+select * from companies where id = 1;
+
+Client has to make new requests for every other association
+
+===========
+
+Ward for every city
+Each ward has many booths
+each booth has many voters registered
+
+Solution:
+EntityGraph of JPA
+
+1) "companyWithDepartmentsGraph" attributeNodes = {@NamedAttributeNode("departments")}
+company + departments ==> join
+```
+select
+        company0_.id as id1_2_0_,
+        department1_.id as id1_3_1_,
+        company0_.name as name2_2_0_,
+        department1_.company_id as company_3_3_1_,
+        department1_.name as name2_3_1_,
+        department1_.company_id as company_3_3_0__,
+        department1_.id as id1_3_0__ 
+    from
+        company company0_ 
+    left outer join
+        department department1_ 
+            on company0_.id=department1_.company_id 
+    where
+        company0_.id=?
+```
+2)"companyWithDepartmentsAndEmployeesGraph"
+    {@NamedAttributeNode(value = "departments",
+    subgraph = "departmentsWithEmployees"
+    name = "departmentsWithEmployees",
+                        attributeNodes = @NamedAttributeNode("employees")
+company + departments + employees
+
+3) "companyWithDepartmentsAndEmployeesAndOfficesGraph"
+    @NamedAttributeNode(value = "departments"
+    departmentsWithEmployeesAndOffices
+        ==> {@NamedAttributeNode("employees"), @NamedAttributeNode("offices")}
+company + departments + employees + offices
+```
+select
+        company0_.id as id1_2_0_,
+        department1_.id as id1_3_1_,
+        employees2_.id as id1_4_2_,
+        offices3_.id as id1_5_3_,
+        company0_.name as name2_2_0_,
+        department1_.company_id as company_3_3_1_,
+        department1_.name as name2_3_1_,
+        department1_.company_id as company_3_3_0__,
+        department1_.id as id1_3_0__,
+        employees2_.address_id as address_4_4_2_,
+        employees2_.department_id as departme5_4_2_,
+        employees2_.name as name2_4_2_,
+        employees2_.surname as surname3_4_2_,
+        employees2_.department_id as departme5_4_1__,
+        employees2_.id as id1_4_1__,
+        offices3_.address_id as address_3_5_3_,
+        offices3_.department_id as departme4_5_3_,
+        offices3_.name as name2_5_3_,
+        offices3_.department_id as departme4_5_2__,
+        offices3_.id as id1_5_2__ 
+    from
+        company company0_ 
+    left outer join
+        department department1_ 
+            on company0_.id=department1_.company_id 
+    left outer join
+        employee employees2_ 
+            on department1_.id=employees2_.department_id 
+    left outer join
+        office offices3_ 
+            on department1_.id=offices3_.department_id 
+    where
+        company0_.id=?
+```
+EntityGraphType.FETCH -> attributes that are specified by attribute nodes of the entity graph are treated as FetchType.EAGER and attributes that are not specified are treated as FetchType.LAZY
+
+EntityGraphType.LOAD -> attributes that are specified by attribute nodes of the entity graph are treated as FetchType.EAGER and attributes that are not specified are treated according to their specified or default FetchType. LIKE EAGER OR LAZY
+
+======================
+Using JP-QL ==> @Query(...)
+
+
+Criteria API and Specification
+The Criteria API is a predefined API used to define queries for entities. 
+It is the alternative way of defining a JPQL query. ==> OO way of writing queuries
+
+Spring Data JPA Specifications allow us to create dynamic database queries by using the JPA Criteria API.
+
+
+
+public interface Specification<T> {
+  Predicate toPredicate(Root<T> root, CriteriaQuery query, CriteriaBuilder cb);
+}
+
+========
+
+This class creates a thread pool
+@EnableAsyc
+public class AppConfig {
+ 
+     @Bean("flights")
+     public Executor getAsyncExecutor() {
+          ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+         executor.setCorePoolSize(7);
+          executor.setMaxPoolSize(42);
+          executor.setQueueCapacity(11);
+          executor.setThreadNamePrefix("flights");
+          executor.initialize();
+          return executor;
+      }
+    @Bean("hotels")
+     public Executor getAsyncExecutor() {
+          ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+         executor.setCorePoolSize(7);
+          executor.setMaxPoolSize(42);
+          executor.setQueueCapacity(11);
+          executor.setThreadNamePrefix("hotels");
+          executor.initialize();
+          return executor;
+      }
+}
+
+Executors.newFixedThreadPool(4);
+
+// Promise return
+@Service
+public class AppService
+
+ @Async("flights")
+ CompletableFuture<List<Flight>> getFlights() {
+    return restTemplate.exchange("http://server.com/flights")..
+ }
+
+
+ @Async("hotels")
+ CompletableFuture<List<Hotel>> getHotels() {
+    return restTemplate.exchange("http://differentserver.com/hotels")..
+ }
+
+
+================================================
+
+Spring Boot Reactive web services using WebFlux
+Spring WebFlux is a parallel version of Spring MVC and supports fully non-blocking reactive streams.
+
+MicroService ==> Spring MVC
+MicorService ==> WebFLux
+
+Subscriber and Publisher pattern
+
+Netty Server:Netty is an asynchronous event-driven network application framework
+
+
+New Spring boot Project with Spring Reactive Web dependency
+
+Spring Security
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+http://localhost:8080/login
+http://localhost:8080/logout
+
+with one user with "user": "generated password"
+
+{
+    "username":"",
+    "password":""
+}
+
+JSESIONID: 5646F0DC1A709C8D1034787075C3EF73
+
+=========
+
+Recap: 
+EntityGraph: Different database tables join based on requirement and not depending on EAGER or LAZY FetchType
+
+Specification: Dynamic Queries ==> CriteriaBuilder {OO way of building Queures} and JpaSpecitionExecutor
+
+Using Asynchronous operations within Container - not depending on Tomcat Threads for REST Calls with Spring container @EnableAsync Bean of ThreadPool, @Async methods returning Future or CompletableFuture
+
+WebFlux : Publsiher { Flux (0 to n) and Mono (0 to 1)}, Netty server for Event loop based execution instead of Thread based { as in tomcat}
+
+Security
+
+Method Level Security:
+@EnableMethodSecurity
+public class SecurityConfig {
+
+
+@PreAuthorize("hasRole('ADMIN') or hasRole('READ')")
+@GetMapping("/posts")
+
+@PreAuthorize("hasRole('ADMIN')")
+@GetMapping("/authors")
+	
+1) 	@PreAuthorize("hasRole('ADMIN') or hasRole('READ')")
+
+2) 	@Secured("ADMIN")
+
+https://bcrypt-generator.com/
 
 
 
