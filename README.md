@@ -1990,5 +1990,70 @@ public class SecurityConfig {
 https://bcrypt-generator.com/
 
 
+=====
 
+* JWT
+JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.
+* Opaque Token
+    --> PK references a database entry that has data
+
+JWT token:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+HEADER:
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+PAYLOAD:
+{
+  "sub": "banuprakash",
+  "iat": 1516239022,
+  "exp": 1516299022,
+  "authorities":"read,write",
+  "iss": "http://myownauthizationserver.com"
+}
+
+Verify Signature:
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  "topsecretkey" ==> Symmetric key
+) 
+
+ASymmetric key
+* private key for encryption
+* public key for decryption
+
+JWT:
+	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
+        instead of spring-security
+
+   <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+		</dependency>
+        to read configuration files
+
+GENERATE Private Key and Public Key
+
+src/main/resources
+
+certs % openssl genrsa -out keypair.pem 2048
+
+Generate Public Key:
+openssl rsa -in keypair.pem -pubout -out public.pem
+
+Generate Private Key:
+openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
+
+can delete "keypair.pem"
+
+ Nimbus JOSE+JWT is configured in spring boot 2.7 onwards
+com.nimbusds » nimbus-jose-jwt
+
+RESUME 4:20
 
