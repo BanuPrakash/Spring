@@ -201,3 +201,61 @@ Example:
 3) @ComponentScan
 
 @ComponentScan(basePackage="com.myorg.project")
+```
+
+Issue:
+```
+Could not autowire. There is more than one bean of 'EmployeeDao' type.
+Beans:
+employeeDaoJdbcImpl   (EmployeeDaoJdbcImpl.java) 
+employeeDaoMongoImpl   (EmployeeDaoMongoImpl.java)
+```
+
+Solution 1:
+Mark one of the type as @Primary
+```
+@Repository
+@Primary
+public class EmployeeDaoJdbcImpl implements  EmployeeDao{
+ 
+```
+
+Solution 2:
+use @Qualifier 
+
+```
+
+@Service
+//@RequiredArgsConstructor
+public class AppService {
+    @Autowired
+    @Qualifier("employeeDaoJdbcImpl")
+    private  EmployeeDao employeeDao;
+
+
+```
+
+Solution 3: using @Profile
+
+```
+
+@Repository
+@Profile("prod")
+public class EmployeeDaoJdbcImpl implements  EmployeeDao{
+
+@Repository
+@Profile("dev")
+public class EmployeeDaoMongoImpl implements  EmployeeDao{
+ 
+Program arguments:
+--spring.profiles.active=prod=dev
+
+OR
+https://docs.spring.io/spring-boot/appendix/application-properties/index.html
+
+application.properties
+spring.profiles.active=prod
+
+OR 
+Environment variable
+```
