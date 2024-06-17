@@ -282,3 +282,203 @@ public class EmployeeDaoMongoImpl implements  EmployeeDao{
 
 Java <--> JSON ===> GSON 
 default is Jackson Objectmapper [@ConditionalOnMissingBean ]
+
+============
+
+Factory method: @Bean
+* we need to use 3rd party libraries in Spring boot
+* Custom way of creating bean and initializing.
+
+Adding dependency com.mchange:c3p0:0.10.1
+
+Example:
+```
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public DataSource getDataSource() {
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver
+        cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+        cpds.setUser("swaldman");
+        cpds.setPassword("test-password");
+
+        // the settings below are optional -- c3p0 can work with defaults
+        cpds.setMinPoolSize(5);
+        cpds.setAcquireIncrement(5);
+        cpds.setMaxPoolSize(20);
+        return cpds;
+    }
+}
+
+@Repository
+public class EmployeeDaoJdbcImpl implements  EmployeeDao{
+    @Autowired
+    DataSource ds;
+
+    method() {
+        Connection con = ds.getConnection();
+        ...
+    }
+}
+```
+
+Scope of the bean:
+1) Singleton: default scope
+
+@Repository
+@Singleton
+or
+@Scope("singleton")
+public class EmployeeDaoJdbcImpl implements  EmployeeDao{
+
+2) Prototype
+```
+@Repository
+@Scope("prototype")
+public class EmployeeDaoMongoImpl implements  EmployeeDao{
+    List<MyData> data = ...
+}
+  
+@Service
+public class OrderService {
+    @Autowired
+    EmployeeDao empDao;
+}
+
+@Service
+public class DashboardService {
+    @Autowired
+    EmployeeDao empDao;
+}
+```
+Applicapble only for web based application:
+3) request
+@Scope("request")
+@RequestScope
+4) session [conversational state of client] ==> Cart Handling
+@SessionScope
+@Scope("session")
+5) application [one per web container]
+
+========================================
+
+ORM ==> Object Relational Mapping
+
+Java Object <----> Relational database table
+fields <---> columns of table
+
+```
+@Entity
+@Table(name="products")
+public class Product {
+    @Id
+    private int id;
+    private String name;
+    @Column(name="amount")
+    private double price;
+    @Column(name="qty")
+    private int quantity;
+}
+
+```
+ORM frameworks are going to generate DDL and DML based on mapping
+--> simplifiy development for CRUD operations using RDBMS
+
+with JDBC: lots of plumbing code
+```
+  @Override
+    public void addProduct(Product product) throws PersistenceException {
+        String SQL = "INSERT INTO products(id, name, price, quantity) VALUES(0, ? ,? ,?)";
+        Connection con = null;
+        try {
+            con = DBUtil.getConnection();
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, product.getName());
+            ps.setDouble(2, product.getPrice());
+            ps.setInt(3, product.getQuantity());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+           // log
+            throw  new PersistenceException("unable to add product", e);
+        } finally {
+            DBUtil.closeConnection(con);
+        }
+    }
+```
+with ORM framework
+``
+EntityManager em; 
+ @Override
+    public void addProduct(Product product) {
+        em.persist(product);
+    }
+```
+ ORM Frameworks: Hibernate, TopLink, KODO, JDO, OpenJPA, EcpliseLink,,
+ JPA: Java Persistence API is a specification for ORM
+
+Data Mapping library:jooQ, iBatis
+
+Configuration:
+```
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public DataSource getDataSource() {
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver
+        cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+        cpds.setUser("swaldman");
+        cpds.setPassword("test-password");
+
+        // the settings below are optional -- c3p0 can work with defaults
+        cpds.setMinPoolSize(5);
+        cpds.setAcquireIncrement(5);
+        cpds.setMaxPoolSize(20);
+        return cpds;
+    }
+
+    @Bean
+    public EntityManagerFactory getEmf(DataSource ds) {
+        LocalContainerEntityManagerFactory emf = new LocalContainerEntityManagerFactory();
+        emf.setDataSource(ds);
+        emf.setJpaVendor(new HibernateJpaVendor());
+        ...
+        emf.setPackagestoScan("com.synchronoss.prj.entity"); // where are my entity classes
+        return emf;
+    }
+}
+
+@Repository
+public class ProductDao {
+    @PersistenceContext
+    EntityManager em; 
+    
+    @Override
+    public void addProduct(Product product) {
+        em.persist(product);
+    }
+}
+
+```
+
+Spring Data JPA:
+by default configures HikariCP as datasoure: pool of database connections
+configures Hibernate as ORM provider
+
+Application "shopapp" with :lombok, mysql, jpa dependency
+
+Spring Data JPA simplies CRUD operations
+```
+No need for Repository class, implementation class is gnerated by Spring Data JPA
+public interface ProductDao extends JpaRepository<Product, Integer> {
+}
+``
+
+
+
+
