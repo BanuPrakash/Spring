@@ -238,7 +238,6 @@ public class AppService {
 Solution 3: using @Profile
 
 ```
-
 @Repository
 @Profile("prod")
 public class EmployeeDaoJdbcImpl implements  EmployeeDao{
@@ -259,3 +258,27 @@ spring.profiles.active=prod
 OR 
 Environment variable
 ```
+
+Solution 4:
+@ConditionalOnProperty
+
+
+@Repository
+@ConditionalOnProperty(name="dao", havingValue = "jdbc")
+public class EmployeeDaoJdbcImpl implements  EmployeeDao{
+
+@Repository
+@ConditionalOnProperty(name = "dao", havingValue = "mongo")
+public class EmployeeDaoMongoImpl implements  EmployeeDao{
+ 
+application.properties
+dao=mongo
+
+Solution 5:
+@ConditionalOnMissingBean
+
+@ConditionalOnMissingBean(EmployeeDaoJdbcImpl.class)
+public class EmployeeDaoMongoImpl implements  EmployeeDao{
+
+Java <--> JSON ===> GSON 
+default is Jackson Objectmapper [@ConditionalOnMissingBean ]
