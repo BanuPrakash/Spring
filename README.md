@@ -55,5 +55,149 @@ bash terminal> mysql -u "root" -p
 
 mysql> exit
 
-================
+=====================
 
+Spring Framework
+Spring Boot
+Spring and JPA integration
+Spring Restful Web services
+Secure
+Introduction to Microservices
+
+------------
+
+Spring Framework
+--> light weight container for building enterprise application
+* life cycle management of beans and wiring dependecies
+
+SOLID design principles
+
+D => dependency Injection
+
+Spring has modules to integrate with RDBMS / MONGODB / MVC ,...
+
+```
+public interface EmployeeDao {
+    void addEmployee();
+}
+
+// Realization
+public class EmployeeDaoDbImpl implements EmployeeDao {
+    // state and behaviour
+    public void addEmployee() {
+        // logic
+    }
+}
+
+
+// Realization
+public class EmployeeDaoMongoImpl implements EmployeeDao {
+    // state and behaviour
+    public void addEmployee() {
+        // logic
+    }
+}
+
+public class AppService {
+    private EmployeeDao employeeDao;
+
+    public void setDao(EmployeeDao empDao) {
+        this.employeeDao = empDao;
+    }
+
+    public void add() {
+        this.employeeDao.addEmployee();
+    }
+}
+
+beans.xml
+<beans>
+    <bean id="dbImpl" class="pkg.EmployeeDaoDbImpl" />
+    <bean id="mongoImpl" class="pkg.EmployeeDaoMongoImpl" />
+    <bean id="service" class="pkg.AppService">
+        <property name="dao" ref="mongoImpl" /> 
+    </bean>
+</beans>
+
+service.setDao(mongoImpl); // setter DI
+
+ApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
+AppService service = ctx.getBean("service", AppService.class);
+service.add();
+
+
+```
+
+Annotation for metadata:
+a) class level annotation
+1) @Component
+2) @Repository
+3) @Service
+4) @Configuration
+5) @Controller
+6) @RestController
+7) @ControllerAdvice
+
+```
+public interface EmployeeDao {
+    void addEmployee();
+}
+
+@Repository
+public class EmployeeDaoDbImpl implements EmployeeDao {
+    // state and behaviour
+    public void addEmployee() {
+        // logic
+    }
+}
+
+@Service
+public class AppService {
+    @Autowired //byType 
+    private EmployeeDao employeeDao;
+    public void add() {
+        this.employeeDao.addEmployee();
+    }
+}
+
+OR
+@Service
+public class AppService {
+    private EmployeeDao employeeDao;
+
+    // ConstructorDI
+    public AppService(EmployeeDao empDao) {
+        this.employeeDao = empDao;
+    }
+    public void add() {
+        this.employeeDao.addEmployee();
+    }
+}
+
+ApplicationContext ctx = AnnotationConfigApplicationContext();
+ctx.scan("pkg");
+ctx.ready();
+
+```
+
+ByteCode Instrumentation libraries : Byte Buddy / JavaAssist / CGLib [proxy]
+https://github.com/spring-projects/spring-framework/blob/main/spring-jdbc/src/main/resources/org/springframework/jdbc/support/sql-error-codes.xml
+
+why Spring Boot?
+* Spring boot framework is on top of Spring  Framework
+Spring boot 3.x is on top of Spring Framework 6.x
+* simplify development
+* highly opiniated framework
+Example:
+1) if we are building web applicaiton: Tomcat embedded web container is provided
+2) if we are using database: Connection Pool is provided out of box
+...
+* Docker ready
+
+
+@SpringBootApplication is 3 in 1:
+1) @Configuration
+2) @EnableAutoConfiguration [ built-in configuration beans]
+3) @ComponentScan
+
+@ComponentScan(basePackage="com.myorg.project")
