@@ -63,7 +63,7 @@ Spring and JPA integration
 Spring Restful Web services
 Secure
 Introduction to Microservices
-
+BeanPropertyWriter & BeanSerializerModifier
 ------------
 
 Spring Framework
@@ -481,4 +481,160 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
 
 
 
+Recap:
+```
+Spring Framework : ApplicationContext --> Spring Container
+
+ServletContainer : reated only to web components like HttpServlet, HttpServletRequest, HttpServletResponse
+
+doGet(HttpServletRequest req, HttpServletResponse res) {
+}
+
+EJBContainer: related only to EJB like SessionBean, MessageDriveBean, EntityBean, ...
+
+Spring Boot vs Spring Framework
+
+JPA / ORM using Hibernate as ORM Framework
+PersitenceContext where entities are managed [ sync with RDBMS ]
+EntityManager --> EntityManagerFactory [ DataSource and JPAVendor]
+
+Spring Data JPA: simplifies JPA usage
+```
+
+Day 2
+
+Spring Boot 2.x
+import javax.*
+changes to:
+Spring Boot 3.x
+import jakarta.*;
+
+Methods:
+built-in
+```
+1) Optional<T> findById(ID id); //EAGER loading, select statement ...
+2) T getById(ID id); --> Proxy Object -> Lazy Loading
+
+Product p = productDao.getById(2); // No HIT to database
+// p is a proxy object
+// p.getName(); // hits the DB and fetches the data [ Make sure Connection to DB is alive, else you get
+LazyInitializationException]
+
+for(i = 1; i <= 100; i++) {
+    productDao.getById(i); // 100 proxy objects
+}
+
+3) T getReferenceById(ID id); --> Proxy Object populated only with ID / Primary Key
+Useful only for association Mapping
+
+Post and Comment
+// Association
+public class Comment {
+    id, review
+    Post post; // belongs to a Post
+}
+
+Scenario 1:
+void addNewComment(String body, int postId) {
+    Comment comment = new Comment()
+        .setReview(body)
+        .setPost(postRepo.findById(postId)) // select * from posts where postId = ?
+        .orElseThrow( ...)
+    
+    commentRepo.save(comment);
+}
+
+Scenario 2:
+void addNewComment(String body, int postId) {
+    Comment comment = new Comment()
+        .setReview(body)
+        .setPost(postRepo.getReferenceById(postId)) // Post Proxy with only ID populated
+        .orElseThrow( ...)
+    commentRepo.save(comment);
+}
+```
+
+Spring Data JPA Projections:
+1) Entity Projections:
+* selects all mapped database columns
+* returns as managed object
+* can perform write operations on managed object
+
+2) Scalar Projections:
+* one or more database columns
+* returns unmanaged objects
+* read-only operation
+
+3) DTO projections:
+* one or more database columns
+* returns unmanaged objects
+* read-only operation
+
+JP-QL 
+1) uses classname and field name in query
+2) case-sensitive
+3) polymorphic
+
+Examples:
+1) from Product
+// select * from products
+2) from Product where price = 100
+// select * from products where amount = 100
+
+start with "select" for scalar values
+3) select name, price from Product
+// select name, amount from products
+
+4) from Object
+    // get all rows of all tables in database
+
+   class Product {} // maps to products
+   class Tv extends Product{} // maps to tvs
+   class Mobile extends Product {}  // maps to mobiles table
+
+   from Product;
+   // get data from products, tvs and mobiles
+
+SQL
+1) uses table and column names
+
+record vs class
+
+```
+Class Option 1:
+  @Query("select name, price from Product where price >= :l and price <= :h")
+    List<ProductRecord> getByRange(@Param("l") double low, @Param("h") double high);
+
+public class ProductRecord {
+    name, price
+    public ProductRecord(name, price) {
+    }
+    // getters and setters
+}
+
+Class Option 2:
+  @Query("select new pkg.ProductRecord(name, price) from Product where price >= :l and price <= :h")
+    List<ProductRecord> getByRange(@Param("l") double low, @Param("h") double high);
+
+public class ProductRecord {
+    name, price
+    public ProductRecord() {}
+    public ProductRecord(String name) {}
+    public ProductRecord(name, price) {
+    }
+    // getters and setters
+}
+```
+
+@Query ==> Select statement ==> ResultSet executeQuery("sql");
+@Modifying ==> int executeUpdate(SQL); // for INSERT , DELETE , UPDATE 
+
+A) create tables if not exist, if exists use them, alter if required
+spring.jpa.hibernate.ddl-auto=update
+
+B) no changes to existing schema, map entities to existing tables
+spring.jpa.hibernate.ddl-auto=verify
+
+C) create tables and drop them for every run of application [ good for testing only]
+spring.jpa.hibernate.ddl-auto=create
 
