@@ -638,3 +638,16 @@ spring.jpa.hibernate.ddl-auto=verify
 C) create tables and drop them for every run of application [ good for testing only]
 spring.jpa.hibernate.ddl-auto=create
 
+
+H2 database: In-memory database
+
+runtimeOnly 'com.h2database:h2'
+
+application.properties
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+
