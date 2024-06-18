@@ -4,12 +4,14 @@ import com.example.shopapp.entity.Product;
 import com.example.shopapp.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Order(1)
 public class ProductClient implements CommandLineRunner {
     private final OrderService service;
     // method gets called as soon as Spring container is created and initialized

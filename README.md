@@ -653,4 +653,53 @@ spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 ```
 ===========
 
+Mapping association:
+1) onetomany
+2) manytoone
+3) onetoone
+4) manytomany
+
+for ManyToOne: @JoinColumn introduces FK in owning table
+for onetoMany: @JoinColumn introduces FK in child table
+
+Without Cascade:
+order has 4 items;
+```
+Save:
+orderDao.save(order);
+itemDao.save(item1);
+itemDao.save(item2);
+itemDao.save(item3);
+itemDao.save(item4);
+```
+
+Delete:
+```
+orderDao.delete(order);
+itemDao.delete(item1);
+itemDao.delete(item2);
+itemDao.delete(item3);
+itemDao.delete(item4);
+``
+WithCascade:
+```
+orderDao.save(order);
+orderDao.delete(order);
+```
+
+EAGER vs LAZY loading: 
+default: one to many associations are lazy loading, many to one are EAGER fetched
+
+Lazy:
+Order order = orderDao.findById(11);
+select * from orders where id = 11;
+
+later: [make sure db connection is not lost, else we get LazyInitializationException]
+order.getLineItems();  //select * from line_items where order_fk = 11;
+
+Eager:
+Order order = orderDao.findById(11);
+select * from line_items where order_fk = 11; 
+
+
 
