@@ -918,6 +918,27 @@ list ==> list.jsp
 list ==> list.pdf
 ```
 
+Postman / Advanced Rest Client to test RESTful endpoints
+
+GET http://localhost:8080/api/products
+accept: application/json
+
+GET http://localhost:8080/api/products/3
+accept: application/json
+
+GET http://localhost:8080/api/products?low=100&high=5000
+accept: application/json
+
+
+POST http://localhost:8080/api/products
+accept: application/json
+content-type: application/json
+body:
+{
+    "name": "OnePlus14",
+    "price": 87341.11,
+    "quantity": 100
+}
 
 
 

@@ -46,7 +46,7 @@ public class ProductController {
     public Product addProduct(@RequestBody Product p) {
          return  service.saveProduct(p);
     }
-    
+
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         return  "deleted !!!";
