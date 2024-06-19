@@ -51,4 +51,9 @@ public class ProductController {
     public String delete(@PathVariable("id") int id) {
         return  "deleted !!!";
     }
+
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable("id") int id, @RequestBody Product p) {
+        return  service.updateProduct(id, p.getPrice());
+    }
 }

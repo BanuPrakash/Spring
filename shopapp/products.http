@@ -25,5 +25,37 @@ content-type: application/json
     "quantity": 100
 }
 
+###
+
+POST http://localhost:8080/api/orders
+accept: application/json
+content-type: application/json
+ {
+            "customer": {"email":"amy@gmail.com"},
+            "items": [
+                {
+                    "product": {id: 2}, "qty": 1
+                },
+                {
+                    "product": {id: 1}, "qty": 3
+                }
+            ]
+}
+
+###
+GET http://localhost:8080/api/orders
+
+###
+
+PATCH http://localhost:8080/api/employees/1
+Content-Type: application/json-patch+json
+Accept: application/json
+[
+                        {"op":"replace", "path": "/title" , "value" : "Team Lead"},
+                        {"op" : "add" , "path": "/communication/phone", "value": "1234567890"},
+                        {"op": "remove", "path": "/communication/email"},
+                        {"op" : "add" , "path": "/skills/1", "value": "AWS"}
+                    ]
+
 
 

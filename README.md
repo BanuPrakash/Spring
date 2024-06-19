@@ -918,27 +918,61 @@ list ==> list.jsp
 list ==> list.pdf
 ```
 
-Postman / Advanced Rest Client to test RESTful endpoints
+PATCH operations:
+Prefer this for partial updates if the entity is complex
+https://jsonpatch.com/
 
-GET http://localhost:8080/api/products
-accept: application/json
+```
+package org.example;
 
-GET http://localhost:8080/api/products/3
-accept: application/json
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
 
-GET http://localhost:8080/api/products?low=100&high=5000
-accept: application/json
+public class Main {
+    public static void main(String[] args) throws Exception {
+        var employee = """
+                {
+                    "title" : "Sr. Software Eng",
+          
+                     "skills" : [
+                            "Spring Boot",
+                            "ReactJS"
+                     ],
+                     "communication": 
+                         {
+                         "email": "abc@company.com"
+                         }
+                      
+                }
+                """;
 
+        var patch = """
+                    [
+                        {"op":"replace", "path": "/title" , "value" : "Team Lead"},
+                        {"op" : "add" , "path": "/communication/phone", "value": "1234567890"},
+                        {"op": "remove", "path": "/communication/email"},
+                        {"op" : "add" , "path": "/skills/1", "value": "AWS"}
+                    ]
+                """;
 
-POST http://localhost:8080/api/products
-accept: application/json
-content-type: application/json
-body:
-{
-    "name": "OnePlus14",
-    "price": 87341.11,
-    "quantity": 100
+        ObjectMapper mapper = new ObjectMapper();
+        JsonPatch jsonPatch = JsonPatch.fromJson(mapper.readTree(patch));
+
+        var target = jsonPatch.apply(mapper.readTree(employee));
+        System.out.println(target);
+    }
 }
 
+curl --location --request PATCH 'http://localhost:8080/api/employees/1' \
+--header 'Accept: application/json' \
+--header 'Content-Type:  application/json-patch+json' \
+--data '[
+                        {"op":"replace", "path": "/title" , "value" : "Team Lead"},
+                        {"op" : "add" , "path": "/communication/phone", "value": "1234567890"},
+                        {"op": "remove", "path": "/communication/email"},
+                        {"op" : "add" , "path": "/skills/1", "value": "AWS"}
+                    ]'
+                    
+```
 
 
