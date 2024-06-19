@@ -897,5 +897,27 @@ WebApplicationContext are of 2 types:
 1) Servlet WebApplicationContext
 2) Root WebApplicationContext
 
-====
+URI identifies the resource
+CRUD operations:
+GET --> SELECT
+POST --> INSERT
+PUT / PATCH --> UPDATE
+DELETE --> DELETE
+===========
+
+```
+@Controller
+public class ProductController {
+@RequestMapping(value="/getProducts", method=RequestMethod.GET)
+public String doTask() {
+    return "list" ; // Controller assumes it's the name of view
+} 
+
+Based on ViewResolver 
+list ==> list.jsp
+list ==> list.pdf
+```
+
+
+
 

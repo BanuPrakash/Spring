@@ -69,6 +69,9 @@ public class OrderService {
         return customerDao.count();
     }
 
+    public List<Product> findProductRange(double low, double high) {
+        return productDao.findByPriceBetween(low, high);
+    }
     public Customer findCustomerByEmail(String email) {
         return customerDao.findById(email).get();
     }

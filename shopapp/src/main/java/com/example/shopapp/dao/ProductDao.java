@@ -29,7 +29,7 @@ public interface ProductDao extends JpaRepository<Product, Integer> {
     @Query("select name, price from Product where price >= :l and price <= :h")
     List<ProductRecord> getByRange(@Param("l") double low, @Param("h") double high);
 
-    List<ProductRecord> findByPriceBetween(double low, double high);
+    List<Product> findByPriceBetween(double low, double high);
 
     @Modifying
     @Query("update Product set price = :pr where id = :id")
