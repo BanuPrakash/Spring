@@ -701,5 +701,201 @@ Eager:
 Order order = orderDao.findById(11);
 select * from line_items where order_fk = 11; 
 
+Many-To-Many:
+```
+@Table(name="movies")
+public class Movie {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="movie_id")
+    private int movieId;
 
+    private String name;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name="movie_actors",
+            joinColumns= @JoinColumn(name="mid"),
+            inverseJoinColumns= @JoinColumn(name="aid")
+    )
+    private List<Actor> actors = new ArrayList<>();
+
+}
+@Entity
+@Table(name="actors")
+public class Actor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="actor_id")
+    private int actorId;
+
+    private String name;
+}
+
+@Component
+@AllArgsConstructor
+public class MovieClient implements CommandLineRunner {
+    private final MovieService movieService;
+    @Override
+    public void run(String... args) throws Exception {
+       // first();
+       // second();
+        third();
+    }
+
+    private void third() {
+        movieService.assignActorToMovie(2, 1);
+    }
+
+    private void second() {
+        Movie m = new Movie();
+        m.setName("Broken Arrow");
+        movieService.addMovieWithActors(m);
+    }
+
+    private void first() {
+        Movie m1 = new Movie();
+        m1.setName("Pulp Fiction");
+
+        Actor a1 = new Actor();
+        a1.setName("John Travolta");
+
+        Actor a2 = new Actor();
+        a2.setName("Uma Thruman");
+
+        m1.getActors().add(a1);
+        m1.getActors().add(a2);
+        movieService.addMovieWithActors(m1);
+    }
+}
+
+```
+
+Recap:
+JPA
+Enity mapping
+Association mapping
+* OneToMany
+* ManyToOne
+* Cascade
+* FetchType.EAGER vs FetchType.LAZY
+
+Scalar Projection
+DTO Projection
+Entity Projection
+
+CommandLineRunner --> run() @Order
+
+@Transactional --> Atomic code
+
+Day 3:
+
+States of Object
+1) Transient state
+2) Managed state [ attached to PersistenceContext]
+Any changes --> Dirty Check --> sync with database
+3) Detached State [ once it was a part of managed state, now it is no longer]
+Any changed done to detached will have to be re-attached to sync with database
+4) Removed state
+    entity is no longer has a mapping in persistent store [ like database]
+
+@Transactional --> Aspect
+* Declartive Transaction support as well as distributed Tx.
+
+Programatic Transaction for JDBC:
+```
+public void doTask(...) {
+    Connection con = ...
+    try {
+        con.setAutoCommit(false);
+        // insert
+        // update
+        con.commit();
+    } catch(SQLException ex) {
+        con.rollback();
+    }
+}
+
+Programatic Transaction for Hibernate:
+
+public void doTask(...) {
+    Session session = sessionFactory.getSession();
+    Transaction tx = null;
+    try {
+         tx = session.beginTransaction();
+        // insert
+        // update
+        tx.commit();
+    } catch(SQLException ex) {
+        tx.rollback();
+    }
+}
+```
+
+Spring MVC module and building RESTful WS
+implementation 'org.springframework.boot:spring-boot-starter-web'
+https://start.spring.io/
+
+Build web, including RESTful, applications using Spring MVC. Uses Apache Tomcat as the default embedded container.
+
+spring.jpa.open-in-view is enabled by default. 
+Tomcat started on port 8080 (http) with context path '/'
+application.properties
+server.port=9999
+
+spring.jpa.open-in-view --> OpenSessionInView pattern
+OpenSessionInViewFilter
+
+Building RESTful WS:
+REST --> REpresetnational State Transfer --> Architectural style for communiting between distributed systems
+Roy Fielding --> 2000
+
+Resource?
+Any information on Server that we can name.
+
+Representation of the resource: [state at a given point of time]
+* data
+* metadata describing the data
+* hypermedia links
+
+Content Negotiation:
+asking for suitable presentation by the client of the represention
+JSON / XML / CSV / RSS ....
+
+Guiding Principles:
+* Uniform Interface
+* Client-server: seperation of concerns
+* Stateless: No conversation state of client is stored on server
+* Cacheable
+
+Best Practices:
+* use nouns to represent resources
+* Collection: server managed directory of resources, clients may propose a new resource to be added to a collection
+* Store: is client managed resource repository
+http://spotify.com/song-managment/users/banu@gmail.com/playlists
+* Controller: procedural concept like executable functions
+    http://spotify.com/song-managment/users/banu@gmail.com/playlists/{id}/play
+    https://amazon.com/cart-managment/.../checkout
+* use hypen to imporove readability
+* lower case URIs
+* NEVER use CRUD functions in URIs
+* use pathparameter for fetching by Primary Key
+* use Query Parameter to get subset / filter
+
+Including: implementation 'org.springframework.boot:spring-boot-starter-web'
+* DispatcherServlet --> FrontController
+* OpenSessionInViewFilter --> to handle JPA Session [ not HttpSession]
+* HandlerMapping
+* ViewResolver
+* HttpMessageConverter
+a) for java primitive types [ String to <==> Double , Integer, Long, Byte,..]
+b) Jackson library for Java <---> JSON
+
+
+for web application we get : WebApplicationContext instead of ApplicationContext
+WebApplicationContext are of 2 types:
+1) Servlet WebApplicationContext
+2) Root WebApplicationContext
+
+====
 

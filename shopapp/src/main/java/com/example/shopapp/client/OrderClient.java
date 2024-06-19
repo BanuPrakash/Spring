@@ -20,9 +20,17 @@ public class OrderClient implements CommandLineRunner {
     private final OrderService service;
     @Override
     public void run(String... args) throws Exception {
-        placeOrder();
+     //   placeOrder();
+        getOrder();
     }
 
+    private void getOrder() {
+        Order order = service.getOrder(1);
+        System.out.println(order.getOrderDate() +" ," + order.getTotal() + ", " + order.getCustomer().getFirstName());
+        for(LineItem item : order.getItems()) {
+            System.out.println(item);
+        }
+    }
     private void placeOrder() {
         Order order = new Order();
 

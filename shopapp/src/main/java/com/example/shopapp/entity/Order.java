@@ -29,7 +29,7 @@ public class Order {
     @JoinColumn(name = "customer_fk")
     private Customer customer; // order is placed by
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_fk")
     private List<LineItem> items = new ArrayList<>();
 

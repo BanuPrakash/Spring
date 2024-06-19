@@ -58,6 +58,10 @@ public class OrderService {
         orderDao.save(order); // cascade takes care of saving line items
         return  "order placed Successfully!!!";
     }
+
+    public Order getOrder(int id) {
+        return orderDao.findById(id).get();
+    }
     public long getProductCount() {
         return productDao.count();
     }
@@ -91,5 +95,11 @@ public class OrderService {
 
     public List<ProductRecord> getByRange(double low, double high) {
         return productDao.getByRange(low, high);
+    }
+
+    @Transactional
+    public Product updateProduct(int id, double price) {
+        productDao.updateProduct(price, id);
+        return findProductById(id);
     }
 }

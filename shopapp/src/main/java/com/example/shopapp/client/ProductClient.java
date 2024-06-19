@@ -17,8 +17,13 @@ public class ProductClient implements CommandLineRunner {
     // method gets called as soon as Spring container is created and initialized
     @Override
     public void run(String... args) throws Exception {
-     insertProducts();
-     getProducts();
+//     insertProducts();
+//     getProducts();
+        updateProduct();
+    }
+
+    private void updateProduct() {
+        service.updateProduct(2, 800.50);
     }
 
     private void insertProducts() {

@@ -1,13 +1,13 @@
 package com.example.shopapp.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,4 +24,8 @@ public class Customer {
 
     @Column(name="LNAME", length = 100)
     private String lastName;
+
+    // By-directional relationship
+   // @OneToMany(mappedBy = "customer")
+    // List<Order> orders = new ArrayList<>();
 }
