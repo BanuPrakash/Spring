@@ -938,6 +938,49 @@ Documentation of RESTful WS
  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
  https://springdoc.org/
 
+=======
+
+AOP: Aspect Oriented Programming
+helps eliminate cross cutting concerns which lead to code tangling and code scattering.
+
+General concerns which lead to code tangling and code scattering : Logging, Security, Profile, Transaction, ...
+
+```
+Logback logger, Transaction from JPA to JTA
+public void transferFunds(Account fromAcc, Account toAcc, double amount) {
+    log.info("Started to transfer funds");
+        if(securityContext.getRole() === 'CUSTOMER, ADMIN') {
+            Transaction tx = ...
+                // get balance from from Account
+                log.info("Balance : " ...);
+                updateFromAcc(..);
+                 log.info("Balance : " ...);
+            tx.commit();
+        }
+    log.info("Fund transfer successfull!!!");
+}
+```
+
+AOP terminology:
+1) Aspect: concerns like loggers, transaction, 
+2) JoinPoint: place in your code where aspect can be weaved [ with spring we can have method and exception only as Joinpoint]
+3) Advice: how aspect is weaved to JoinPoint
+* Before
+* After
+* AfterReturning
+* Around
+* AfterThrowing
+4) PointCut: selected JoinPoint
+
+* Spring depends on AspectJ for AOP
+* Spring by defaults uses RuntimeWeaving of aspects
+* Can be configured as LoadtimeWeaving --> bytecode is modified and loaded to JVM
+@EnableLoadtimeWeaving
+and pass spring-instrumetation library with command line
+-javaagent:/path/path2/spring-instrument-3.2.9.RELEASE.jar
+
+
+
 
 
 

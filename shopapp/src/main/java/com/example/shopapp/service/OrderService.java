@@ -85,12 +85,12 @@ public class OrderService {
         return customerDao.findById(email).get();
     }
 
-    public Product findProductById(int id) {
+    public Product findProductById(int id) throws EntityNotFoundException{
         Optional<Product> optionalProduct = productDao.findById(id);
         if(optionalProduct.isPresent()) {
             return  optionalProduct.get();
         }
-        return null; // later change to Exception
+       throw new EntityNotFoundException("Product with ID : " + id + " not found!!!" );
     }
 
     public List<Product> getAllProducts() {
@@ -110,7 +110,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Product updateProduct(int id, double price) {
+    public Product updateProduct(int id, double price) throws EntityNotFoundException {
         productDao.updateProduct(price, id);
         return findProductById(id);
     }

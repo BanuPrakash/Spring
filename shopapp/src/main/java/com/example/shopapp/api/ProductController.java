@@ -1,6 +1,7 @@
 package com.example.shopapp.api;
 
 import com.example.shopapp.entity.Product;
+import com.example.shopapp.service.EntityNotFoundException;
 import com.example.shopapp.service.OrderService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,7 +47,7 @@ public class ProductController {
                     @ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/{pid}")
-    public Product getProduct(@PathVariable("pid") int id) {
+    public Product getProduct(@PathVariable("pid") int id) throws EntityNotFoundException {
         return service.findProductById(id);
     }
 
@@ -71,7 +72,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable("id") int id, @RequestBody Product p) {
+    public Product updateProduct(@PathVariable("id") int id, @RequestBody Product p)  throws EntityNotFoundException {
         return  service.updateProduct(id, p.getPrice());
     }
 }

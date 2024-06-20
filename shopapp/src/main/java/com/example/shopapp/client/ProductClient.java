@@ -1,6 +1,7 @@
 package com.example.shopapp.client;
 
 import com.example.shopapp.entity.Product;
+import com.example.shopapp.service.EntityNotFoundException;
 import com.example.shopapp.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -22,7 +23,7 @@ public class ProductClient implements CommandLineRunner {
    //     updateProduct();
     }
 
-    private void updateProduct() {
+    private void updateProduct() throws EntityNotFoundException {
         service.updateProduct(2, 800.50);
     }
 
