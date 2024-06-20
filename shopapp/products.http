@@ -36,4 +36,10 @@ Accept: application/json
                     ]
 
 
+###
+POST http://localhost:8080/api/products
+accept: application/json
+content-type: application/json
+
+{ "name": "nn", "price": 8, "quantity": 0 }
 

@@ -978,6 +978,29 @@ AOP terminology:
 @EnableLoadtimeWeaving
 and pass spring-instrumetation library with command line
 -javaagent:/path/path2/spring-instrument-3.2.9.RELEASE.jar
+https://docs.spring.io/spring-framework/docs/2.0.x/reference/aop.html
+
+
+By enabling validation we get javax.validation.constraints implemented by Hibernate
+
+```
+public Product addProduct(@Valid @RequestBody Product p) 
+  @NotBlank(message = "Name is required")
+    private String name;
+
+    @Min(value = 10, message = "Price ${validatedValue} should be more than {value}")
+    @Column(name="amount")
+    private double price;
+
+    @Min(value = 1, message = "Quantity ${validatedValue} should be more than {value}")
+    @Column(name="qty")
+    private int quantity; // inventory
+```
+
+MethodArgumentNotValidException: 
+[Field error in object 'product' on field 'name': default message [Name is required]] 
+
+[Field error in object 'product' on field 'quantity':  default message [Quantity 0 should be more than 1]] ]
 
 
 
