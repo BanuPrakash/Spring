@@ -19,33 +19,11 @@ accept: application/json
 POST http://localhost:8080/api/products
 accept: application/json
 content-type: application/json
-{
-    "name": "OnePlus14",
-    "price": 87341.11,
-    "quantity": 100
-}
+
+{ "name": "Reynold", "price": 120.10, "quantity": 100 }
 
 ###
 
-POST http://localhost:8080/api/orders
-accept: application/json
-content-type: application/json
- {
-            "customer": {"email":"amy@gmail.com"},
-            "items": [
-                {
-                    "product": {id: 2}, "qty": 1
-                },
-                {
-                    "product": {id: 1}, "qty": 3
-                }
-            ]
-}
-
-###
-GET http://localhost:8080/api/orders
-
-###
 
 PATCH http://localhost:8080/api/employees/1
 Content-Type: application/json-patch+json

@@ -701,75 +701,6 @@ Eager:
 Order order = orderDao.findById(11);
 select * from line_items where order_fk = 11; 
 
-Many-To-Many:
-```
-@Table(name="movies")
-public class Movie {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="movie_id")
-    private int movieId;
-
-    private String name;
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name="movie_actors",
-            joinColumns= @JoinColumn(name="mid"),
-            inverseJoinColumns= @JoinColumn(name="aid")
-    )
-    private List<Actor> actors = new ArrayList<>();
-
-}
-@Entity
-@Table(name="actors")
-public class Actor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="actor_id")
-    private int actorId;
-
-    private String name;
-}
-
-@Component
-@AllArgsConstructor
-public class MovieClient implements CommandLineRunner {
-    private final MovieService movieService;
-    @Override
-    public void run(String... args) throws Exception {
-       // first();
-       // second();
-        third();
-    }
-
-    private void third() {
-        movieService.assignActorToMovie(2, 1);
-    }
-
-    private void second() {
-        Movie m = new Movie();
-        m.setName("Broken Arrow");
-        movieService.addMovieWithActors(m);
-    }
-
-    private void first() {
-        Movie m1 = new Movie();
-        m1.setName("Pulp Fiction");
-
-        Actor a1 = new Actor();
-        a1.setName("John Travolta");
-
-        Actor a2 = new Actor();
-        a2.setName("Uma Thruman");
-
-        m1.getActors().add(a1);
-        m1.getActors().add(a2);
-        movieService.addMovieWithActors(m1);
-    }
-}
-
-```
 
 Recap:
 JPA
@@ -972,7 +903,48 @@ curl --location --request PATCH 'http://localhost:8080/api/employees/1' \
                         {"op": "remove", "path": "/communication/email"},
                         {"op" : "add" , "path": "/skills/1", "value": "AWS"}
                     ]'
-                    
+
 ```
+
+Recap:
+
+```
+Building RESTful WS:
+spring-boot-starter-web including this dependency we get:
+1) Tomcat as embedded Servlet Container / Web Container / Servlet engine
+2) Spring MVC module is include
+* DispatcherServlet --> FrontController --> intercept all requests [url-pattern as "*"]
+* HandlerMapping [key/value] --> For which URL which method of a class should be invoked
+returned reference method is invoked by DispatcherServlet
+    method.invoke(parameters); // Reflection API
+* ViewResolver [ not required for @RestController, only used for @Controller {for traditional web application development -> SSR }]
+* Instead of ApplicationContext we get WebApplicationContext [ Servlet WebApplicationContext {HandlerMapping and ViewResolver} and Root WebApplicationContext {all spring beans}]
+* OpenSessionInViewFilter
+
+@RestController
+@RequestMapping
+@GetMapping, @PostMapping, @PutMapping, @PatchMapping, @DeleteMapping
+@ResponseBody [Java --> XML / JSON], @RequestBody [JSON/XML --> Java]
+@PathVariable, @RequestParam
+JSON-PATCH [add, remove, move, test, replace, ]
+
+```
+
+Day 4:
+
+Documentation of RESTful WS
+1) RAML
+2) OPENAPI - Swagger
+ implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+ https://springdoc.org/
+
+
+
+
+
+
+
+
+
 
 

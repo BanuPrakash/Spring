@@ -3,8 +3,10 @@ package com.example.shopapp.api;
 import com.example.shopapp.dto.Employee;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.web.bind.annotation.*;
 
+@Hidden
 @RestController
 @RequestMapping("api/employees")
 public class EmployeeController {

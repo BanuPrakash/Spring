@@ -1,0 +1,16 @@
+
+POST http://localhost:8080/api/orders
+accept:text/plain
+content-type:application/json
+
+{ "customer": {"email":"peter@gmail.com"},
+  "items": [
+    {"product": {"id": 3}, "qty": 1},
+    {"product": {"id": 2}, "qty": 3}
+  ]
+}
+
+###
+GET http://localhost:8080/api/orders/report?date=2024-06-20
+accept:application/json
+###

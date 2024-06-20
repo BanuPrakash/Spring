@@ -4,6 +4,7 @@ import com.example.shopapp.dao.CustomerDao;
 import com.example.shopapp.dao.OrderDao;
 import com.example.shopapp.dao.ProductDao;
 import com.example.shopapp.dto.ProductRecord;
+import com.example.shopapp.dto.Report;
 import com.example.shopapp.entity.Customer;
 import com.example.shopapp.entity.LineItem;
 import com.example.shopapp.entity.Order;
@@ -12,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +59,13 @@ public class OrderService {
         order.setTotal(total);
         orderDao.save(order); // cascade takes care of saving line items
         return  "order placed Successfully!!!";
+    }
+
+    public List<Order> getOrders() {
+        return orderDao.findAll();
+    }
+    public List<Report> getReport(Date date) {
+        return orderDao.getReportForDate(date);
     }
 
     public Order getOrder(int id) {
