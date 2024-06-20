@@ -1002,6 +1002,24 @@ MethodArgumentNotValidException:
 
 [Field error in object 'product' on field 'quantity':  default message [Quantity 0 should be more than 1]] ]
 
+ Unit Testing:
+ testImplementation 'org.springframework.boot:spring-boot-starter-test'
+ provides:
+ * JUnit-Jupiter as unit testing framework
+ * Hamcrest --> matchers for assertion --> useful for collections
+ * Jsonpath https://jsonpath.com/
+ * Mockito --> mocking library to test in isolation
+
+ RestController --> Service --> DAO ---> Database
+
+ @WebMvcTest --> Creates a minimal WebApplicationContext with DispatcherTestServlet
+
+ ======
+
+ Rest Clients --> Consume REST Api: Application invoking RESTful endpoints
+ * RestTemplate
+ * RestClient [ Spring Boot 3.2]
+ * WebClient --> need to add webflux dependency
 
 
 
