@@ -1011,8 +1011,43 @@ public Product addProduct(@Valid @RequestBody Product p)
 
  =====
 
- Rest Client, Caching, Async operations
+Day 5
+To Consume RESTendpoints in Java application
+* RestTemplate
+* WebClient [ webflux and not with web module]
+* RestClient [ Spring Boot 3.3 version onwards] similar to WebClient
 
+Async operations in Spring WebApplicationContext
+
+```
+@SpringBootApplication
+@EnableAsync
+public class ShopappApplication {
+
+@EnableAsync --> to use application Threadpool for execution instead of Tomcat thread pool
+
+@EnableAsync by default is going to provide a Thread pool [ ForkJoinPool Algorithm]
+
+To make sure that our code uses specified thread pool we need:
+
+@Async("flights-pool")
+getFlights() {
+
+}
+@Async("hotels-pool")
+getHotels() {
+
+}
+```
+
+Spring Declarative HTTP Client using @HttpExchange
+
+@HttpExchange: is the generic annotation to specify an HTTP endpoint. When used at the interface level, it applies to all methods.
+@GetExchange: specifies @HttpExchange for HTTP GET requests.
+@PostExchange: specifies @HttpExchange for HTTP POST requests.
+@PutExchange: specifies @HttpExchange for HTTP PUT requests.
+@DeleteExchange: specifies @HttpExchange for HTTP DELETE requests.
+@PatchExchange: specifies @HttpExchange for HTTP PATCH requests.
 
 
 
