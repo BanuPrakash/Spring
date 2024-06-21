@@ -921,14 +921,6 @@ returned reference method is invoked by DispatcherServlet
 * Instead of ApplicationContext we get WebApplicationContext [ Servlet WebApplicationContext {HandlerMapping and ViewResolver} and Root WebApplicationContext {all spring beans}]
 * OpenSessionInViewFilter
 
-@RestController
-@RequestMapping
-@GetMapping, @PostMapping, @PutMapping, @PatchMapping, @DeleteMapping
-@ResponseBody [Java --> XML / JSON], @RequestBody [JSON/XML --> Java]
-@PathVariable, @RequestParam
-JSON-PATCH [add, remove, move, test, replace, ]
-
-```
 
 Day 4:
 
@@ -997,11 +989,6 @@ public Product addProduct(@Valid @RequestBody Product p)
     private int quantity; // inventory
 ```
 
-MethodArgumentNotValidException: 
-[Field error in object 'product' on field 'name': default message [Name is required]] 
-
-[Field error in object 'product' on field 'quantity':  default message [Quantity 0 should be more than 1]] ]
-
  Unit Testing:
  testImplementation 'org.springframework.boot:spring-boot-starter-test'
  provides:
@@ -1020,6 +1007,13 @@ MethodArgumentNotValidException:
  * RestTemplate
  * RestClient [ Spring Boot 3.2]
  * WebClient --> need to add webflux dependency
+
+
+ =====
+
+ Rest Client, Caching, Async operations
+
+
 
 
 
