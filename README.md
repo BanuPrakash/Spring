@@ -1049,7 +1049,11 @@ Spring Declarative HTTP Client using @HttpExchange
 @DeleteExchange: specifies @HttpExchange for HTTP DELETE requests.
 @PatchExchange: specifies @HttpExchange for HTTP PATCH requests.
 
+dto: User, Post
+service: UserService , PostService
+cfg: AppConfig: Proxy for UserService , PostService and Threadpool
 
+Callable interface we get Future [ a place]
 
 
 
