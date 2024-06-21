@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/discharge
+Content-type: application/json
+Accept: application/json
+
+{
+  "id": "1234",
+  "name" : "Roger"
+}

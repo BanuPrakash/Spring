@@ -1055,8 +1055,83 @@ cfg: AppConfig: Proxy for UserService , PostService and Threadpool
 
 Callable interface we get Future [ a place]
 
+===========
+
+```
+POST http://localhost:8080/api/discharge
+Content-type: application/json
+Accept: application/json
+
+{
+    "id": "1234",
+    "name" : "Roger"
+}
+
+// synchronous and blocking code
+public String dischargePatient(String id, String name) {
+    billingService.processBill();
+    medicalRecordsService.updatePatientHistory();
+    houseKeepingService.cleanAndAssign();
+    notificationService.notifyPatient();
+}
+
+Async operation and ApplicationEvent
+```
+
+Monitoring and Observability
+Monitoring: Notifies that the system is at fault
+A distributed system --> many parts like database, queues, redis, .. other services
+* Health check
+* Metrics --> JVM heap area, threads, CPU memory, ....
+
+implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+management.endpoints.web.exposure.exclude=
+management.endpoints.web.exposure.include=*
+management.metrics.distribution.percentiles-histogram.http.server.requests=true
+
+Spring Boot actuator comes with several pre-defnied health indicators:
+* DataSourceHealthIndictor
+* MongoHealthIndictor
+* RedisSourceHealthIndictor
+* CasandraSourceHealthIndictor
+...
+
+```
+http://localhost:8080/actuator
+http://localhost:8080/actuator/health
+http://localhost:8080/actuator/info
+http://localhost:8080/actuator/beans
+http://localhost:8080/actuator/metrics
+http://localhost:8080/actuator/metrics/http.server.requests
 
 
+ab -c 50 -n 100 http://localhost:8080/api/products/2
+
+```
+Prometheus is an open-source systems monitoring and alerting toolkit , time series data
+time series collection happens via a pull model over HTTP
+
+http://localhost:8080/actuator/prometheus
+
+http://localhost:9090/
+
+http_server_requests_seconds_count
+jvm_threads_live_threads
+
+
+Grafana:
+admin/admin
+
+Step 1:
+Add DataSource: Prometheus
+URL : http://192.168.1.2:8080
+
+Step 2:
+Dashboard
+Adding Panels
+
+============
 
 
 
