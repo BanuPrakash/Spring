@@ -14,11 +14,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.hateoas.Affordance;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import  static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("api/products")
@@ -51,6 +56,18 @@ public class ProductController {
                     @ApiResponse(responseCode = "404", description = "Product  Not found", content = @Content),
                     @ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
     })
+
+    @GetMapping("/hateoas/{pid}")
+    public ResponseEntity<EntityModel<Product>> getProductHateoas(@PathVariable("pid") int id) throws EntityNotFoundException {
+        Product p =  service.findProductById(id);
+        Link selfLink = linkTo(methodOn(ProductController.class).getProductHateoas(id)).withSelfRel();
+        Affordance update = afford(methodOn(ProductController.class).updateProduct(id, null));
+        Affordance delete = afford(methodOn(ProductController.class).delete(id));
+
+        Link productsLink = linkTo(methodOn(ProductController.class).getProducts(0,0)).withRel("products");
+        EntityModel<Product> entityModel = EntityModel.of(p, selfLink.andAffordance(update), selfLink.andAffordance(delete), productsLink);
+        return ResponseEntity.ok(entityModel);
+    }
 
     @GetMapping("/{pid}")
     public Product getProduct(@PathVariable("pid") int id) throws EntityNotFoundException {
@@ -90,8 +107,8 @@ public class ProductController {
     @Hidden
     @DeleteMapping("/{id}")
     @CacheEvict(value = "productCache", key = "#id")
-    public String delete(@PathVariable("id") int id) {
-        return  "deleted !!!";
+    public StringMessage delete(@PathVariable("id") int id) {
+        return  new StringMessage("deleted !!!");
     }
 
     @PutMapping("/{id}")

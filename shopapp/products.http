@@ -55,3 +55,7 @@ accept: application/json
 ###
 GET http://localhost:8080/api/products/cache/1
 accept: application/json
+
+###
+GET http://localhost:8080/api/products/hateoas/1
+accept: application/json

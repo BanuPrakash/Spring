@@ -1284,10 +1284,83 @@ public class Product implements Serializable {
 If nodeJs is installed:
 npx redis-commander
 
-
 ```
 
+HATEOAS
+Hypermedia As the Engine Of Application State
 
+Level 3 - Hypermedia Controls
+
+I place Order:
+order placed --> payment --> delevery
+order placed --> cancel
+order placed --> change delivery address
+
+https://martinfowler.com/articles/richardsonMaturityModel.html
+
+implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+
+RepresentationModel --> Data + links
+EntityModel --> Product + links, 
+CollectionModel --> List<Product>  + links
+
+WebMvcLinkBuilder:Builder to ease building Link instances 
+
+
+@EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL_FORMS)
+public class ShopappApplication {
+
+ Default is HAL ==> Hypermedia As Language   
+```
+
+{
+  "id": 1,
+  "name": "iPhone 15",
+  "price": 89000.0,
+  "quantity": 98,
+  "version": 0,
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/api/products/hateoas/1"
+    },
+    "products": {
+      "href": "http://localhost:8080/api/products?low=0.0&high=0.0"
+    }
+  },
+  "_templates": {
+    "default": {
+      "method": "PUT",
+      "properties": [
+        {
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "name",
+          "regex": "^(?=\\s*\\S).*$",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "name": "price",
+          "min": 10,
+          "type": "number"
+        },
+        {
+          "name": "quantity",
+          "min": 1,
+          "type": "number"
+        },
+        {
+          "name": "version",
+          "type": "number"
+        }
+      ],
+      "target": "http://localhost:8080/api/products/1"
+    }
+  }
+}
+```
 
 
 
