@@ -1133,6 +1133,8 @@ Adding Panels
 
 ============
 
+CAching, HATEOAS --> Monday
+
 
 
 

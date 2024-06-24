@@ -15,12 +15,12 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-
+@org.springframework.core.annotation.Order(3)
 public class OrderClient implements CommandLineRunner {
     private final OrderService service;
     @Override
     public void run(String... args) throws Exception {
-     //   placeOrder();
+//       placeOrder();
     //    getOrder();
     }
 
