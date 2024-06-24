@@ -1269,6 +1269,22 @@ https://spring.io/blog/2020/11/10/new-in-spring-5-3-improved-cron-expressions
 Redis
 
 docker run --name some-redis  -p 6379:6379 -d redis
+
+
+implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+spring.data.redis.port=6379
+spring.data.redis.host=localhost
+
+we get RedisCacheManager instead of ConcurrentMapCache [ conditional bean]
+
+Serialization ==> Process of writing the state of object to a stream
+
+public class Product implements Serializable {
+
+If nodeJs is installed:
+npx redis-commander
+
+
 ```
 
 
