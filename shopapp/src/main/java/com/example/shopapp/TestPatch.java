@@ -3,6 +3,7 @@ package com.example.shopapp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
 
 public class TestPatch {
 
@@ -37,6 +38,7 @@ public class TestPatch {
 
                 var target = jsonPatch.apply(mapper.readTree(employee));
                 System.out.println(target);
+
 
             }
         }

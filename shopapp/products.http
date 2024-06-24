@@ -43,3 +43,15 @@ content-type: application/json
 
 { "name": "nn", "price": 8, "quantity": 0 }
 
+###
+GET http://localhost:8080/api/products/etag/3
+accept: application/json
+
+###
+GET http://localhost:8080/api/products/etag/3
+If-None-Match: "-645019294"
+accept: application/json
+
+###
+GET http://localhost:8080/api/products/cache/1
+accept: application/json

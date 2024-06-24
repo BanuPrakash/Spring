@@ -1131,9 +1131,147 @@ Step 2:
 Dashboard
 Adding Panels
 
+https://www.squadcast.com/blog/prometheus-sample-alert-rules
+
+HTTP requests per second to the "api" service exceeds 50 for a 5-minute period.
+        expr:  avg(rate(http_server_requests_seconds_count{uri="/api/products"}[5m])) > 50
+      
 ============
 
-CAching, HATEOAS --> Monday
+Recap:
+How to use our own thread pool within WebapplicationContext --> Concurrency
+* Aggregator application
+* ApplicationEvent where each @EventListener needs to run on a seperate Thread
+
+@EnableAsyc --> by default provides ThreadPool --> ForkJoinAlgorthim
+we can create ThreadPool Bean --> Exectors / ThreadPoolExecutor...
+
+@Async --> method level to specify that this code needs to run on seperate thread
+
+RestClient [spring Framework 6.x / Spring boot 3.0] instead of RestTemplate [ available from Spring 1.x version ]
+
+@HttpExchange --> Declarative style of making api calls to Endpoints
+
+----------
+
+Monitoring --> spring-boot-starter-actuator
+health, info, metrics, cache,.. endpoints
+
+time-series database and server --> Prometheus
+keeps scrape data from provided endpoint [HTTP Pull]
+we get extra endpoint actuator/prometheus
+
+http://localhost:8080/actuator/prometheus
+
+Day 6:
+
+Grafana:
+DataSource: Prometheus --> http://server_ip:9090
+
+Spring Boot ---> Prometheus --> Grafana
+
+Dashboard: 
+URL : http://192.168.1.7:9090
+
+Add Panel --> select Metric --> Run Query --> Apply
+
+https://github.com/ramesh-lingappan/prometheus-pushgateway-demo/tree/master
+
+================================
+
+http://localhost:8080/api/products/3
+
+Caching
+* Client side Caching
+a) Headers: cache-control
+b) ETag --> ShallowEtagHeaderFilter is available by default
+Entity Tag
+```
+  @GetMapping("/etag/{pid}")
+    public ResponseEntity<Product> getProductEtag(@PathVariable("pid") int id) throws EntityNotFoundException {
+        Product p =   service.findProductById(id);
+        return ResponseEntity.ok().eTag(Long.toString(p.hashCode())).body(p);
+    }
+###
+GET http://localhost:8080/api/products/etag/3
+accept: application/json
+returns
+Etag: "-645019294"
+###
+GET http://localhost:8080/api/products/etag/3
+If-None-Match: "-645019294"
+accept: application/json
+
+```
+
+ @Version
+ private int version;
+ JPA way 
+ @Version takes care of updating each time the entity gets modified.
+ This can be used for Etag and for Concurrency issues
+
+Initially there are 100 products
+ User 1:
+ Product p = productDao.findById(2).get();
+ p.setQuantity(p.getQuantity() - 10);
+
+ User 2:
+  Product p = productDao.findById(2).get();
+ p.setQuantity(p.getQuantity() - 2);
+
+By default last commit wins
+products count will be 90 or 98 based on who finish last.
+
+With @Version optimistic locking
+while update:
+User 1:
+update Product set qty = qty - 10, version = version + 1 where id = 2 and version = 0
+
+User 2:
+update Product set qty = qty - 2, version = version + 1 where id = 2 and version = 0
+
+StaleObjectStateException
+
+* Server-side Caching
+PersistenceContext --> Caching --> Available by default
+Product p = productDao.findById(2).get(); // HIT the DB and makes it as managed state
+...
+Product p2 = productDao.findById(2).get(); // p2 refers to already Managed object, no hit to DB
+
+If we need cache to be shared by deferent requests / clients
+we need to configure EHCache / JBossSwarmCache ....
+can be configured to store data in filesystems 
+Advantage --> reduce HIT to Database
+
+* Middle-tier Caching --> Spring Framework level
+
+1) implementation 'org.springframework.boot:spring-boot-starter-cache'
+by adding above dependeny we get
+ConcurrentMapCache and CacheManager [ in memory cache]
+
+2) 
+```
+@EnableCaching
+@Cacheable(value = "productCache", key = "#id")
+@CachePut(value = "productCache", key = "#id")
+@CacheEvict(value = "productCache", key = "#id")
+
+
+// Don't do this
+@GetMapping("/clearCache")
+@CacheEvict(value = "productCache", allEntries=true)
+public void clearCache() {
+}
+
+@EnableScheduling
+https://spring.io/blog/2020/11/10/new-in-spring-5-3-improved-cron-expressions
+
+Redis
+
+docker run --name some-redis  -p 6379:6379 -d redis
+```
+
+
 
 
 
