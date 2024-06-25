@@ -1311,59 +1311,65 @@ WebMvcLinkBuilder:Builder to ease building Link instances
 public class ShopappApplication {
 
  Default is HAL ==> Hypermedia As Language   
-```
 
-{
-  "id": 1,
-  "name": "iPhone 15",
-  "price": 89000.0,
-  "quantity": 98,
-  "version": 0,
-  "_links": {
-    "self": {
-      "href": "http://localhost:8080/api/products/hateoas/1"
-    },
-    "products": {
-      "href": "http://localhost:8080/api/products?low=0.0&high=0.0"
+=====
+
+Spring Data Rest
+
+Spring Data REST is part of the umbrella Spring Data project and makes it easy to build hypermedia-driven REST web services on top of Spring Data repositories [spring data jpa].
+* by default it creates links to spring data jpa methods
+* no need for RestController
+* all Spring Data Jpa exposes endpoints
+* Good for basic CRUD operations
+
+File -> new project --> spring initializer
+dependencies:
+lombok, web, mysql, data-jpa, rest repositories
+
+http://localhost:8080/api/products
+http://localhost:8080/api/products/search
+http://localhost:8080/api/products/search/findByPriceGreaterThan?price=5000
+
+* We can't use RestController
+
+OLd version:
+@BasePathAwareController for override existing path
+@RepositoryRestController for creating new endpoints.
+
+Now use @RepositoryRestController  for both
+
+
+@RepositoryRestController
+@RequiredArgsConstructor
+public class ProductController {
+    private final ProductDao productDao;
+
+    @GetMapping("api/products")
+    List<Product> getProducts() {
+        // do customization
+        // add extra links
+        // any other changes
     }
-  },
-  "_templates": {
-    "default": {
-      "method": "PUT",
-      "properties": [
-        {
-          "name": "id",
-          "type": "number"
-        },
-        {
-          "name": "name",
-          "regex": "^(?=\\s*\\S).*$",
-          "required": true,
-          "type": "text"
-        },
-        {
-          "name": "price",
-          "min": 10,
-          "type": "number"
-        },
-        {
-          "name": "quantity",
-          "min": 1,
-          "type": "number"
-        },
-        {
-          "name": "version",
-          "type": "number"
-        }
-      ],
-      "target": "http://localhost:8080/api/products/1"
+
+    @GetMapping("/hello")
+    String getMessage() {
+        return "Hello Spring Data Rest!!!";
     }
-  }
 }
-```
 
+@RepositoryRestResource(collectionResourceRel = "products", path = "items")
+public interface ProductDao extends JpaRepository<Product, Integer> {
+}
+instead of http://localhost:8080/api/products we get
+http://localhost:8080/api/items
+order:
+{
+    "products": []
+}
 
+===============================
 
+Day 7:
 
 
 
