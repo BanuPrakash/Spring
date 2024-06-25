@@ -37,7 +37,7 @@ public class ReactiveBasicApplication {
         return args -> {
             ObjectMapper mapper = new ObjectMapper();
             List<Movie> movieList = mapper.readValue(resource.getInputStream(),
-                    new TypeReference<List<Movie>>() {
+                    new TypeReference<>() {
                     });
 
             Flux.fromIterable(movieList)
