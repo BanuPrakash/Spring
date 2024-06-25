@@ -39,7 +39,7 @@ public class ReactiveBasicApplication {
             List<Movie> movieList = mapper.readValue(resource.getInputStream(),
                     new TypeReference<>() {
                     });
-
+            System.out.println(movieList);
             Flux.fromIterable(movieList)
                     .delayElements(Duration.ofSeconds(2))
                     .flatMap(movieDao::save)

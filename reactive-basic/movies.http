@@ -1,0 +1,10 @@
+POST http://localhost:8080/movies
+Content-Type: application/json
+accept: application/json
+
+{
+  "title":"Terminator",
+  "year":2018,
+  "genre":"action",
+  "imdbRating":1.6
+}

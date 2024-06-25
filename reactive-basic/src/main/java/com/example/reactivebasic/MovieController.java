@@ -14,6 +14,7 @@ public class MovieController {
 
     @PostMapping()
     public Mono<String> addMovie(@RequestBody Movie movie) {
+        System.out.println(movie +" ," + movie.getTitle());
         movieDao.save(movie).subscribe();
         return Mono.just("Movie added!!!");
     }
