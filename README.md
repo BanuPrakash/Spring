@@ -1337,8 +1337,7 @@ OLd version:
 @RepositoryRestController for creating new endpoints.
 
 Now use @RepositoryRestController  for both
-
-
+```
 @RepositoryRestController
 @RequiredArgsConstructor
 public class ProductController {
@@ -1360,6 +1359,7 @@ public class ProductController {
 @RepositoryRestResource(collectionResourceRel = "products", path = "items")
 public interface ProductDao extends JpaRepository<Product, Integer> {
 }
+```
 instead of http://localhost:8080/api/products we get
 http://localhost:8080/api/items
 order:
@@ -1370,6 +1370,83 @@ order:
 ===============================
 
 Day 7:
+
+Reactive Programming:
+
+Reactive programming is a programming model that focuses on reacting to changes in data 
+and events instead of waiting for them to happen.
+
+* data streams
+* propagation of change
+
+React to something --> when user clicks a button --> run this function.
+
+```
+function doTask() {
+
+}
+button.addEventListener("click", doTask);
+```
+
+Tomcat / Jetty --> thread based: --> one thread / request
+
+-------
+
+Publisher Subscriber Pattern
+
+Why this pattern when we have @EnableAsync and @Async
+* expensive
+* Still it is synchronous when response is sent [CompletableFuture --> join()]
+
+Reactive Programming: RxJava, Vert.X , reactor
+
+spring-boot-starter-webflux instead of spring-boot-starter-web
+* Netty as Servlet Container/ web server instead of Tomcat web container/server
+
+Netty is a non-blocking I/O, asynchronous event-driven servers.
+
+Netflix 
+client makes a request for Season 2 Episode 3 of GOT
+Blocking: read the entire episode and write to client
+NIO: read a chunk, write to client .. repeat
+
+Prefer ReactiveRepositories and databases like MongoDB --> tailed collection
+
+or R2dbc [Reactive Relational Database Connectivity] instead of JDBC
+
+spring-boot-starter-webflux:
+* uses Publisher, Subcriber and Subscription
+* two publishers are available: Flux and Mono
+Flux --> 0...n Elements
+Mono --> 0..1 element
+
+Cold Publisher:
+* starts publishing/emitting only when a subscriber subscribes to the publisher
+* Example: netflix
+* each observer gets different values
+
+Hot Publisher:
+* emit even when there are no observers
+* Only one data producer
+* Example: Radio Stream
+
+BackPressure
+
+Reactor Hot Publisher:
+1) share()
+ Flux<String> netFlix = Flux.fromStream(() -> getMovie())
+                    .delayElements(Duration.ofSeconds(2)).share();
+
+2) Need to check, not working
+publish()
+      Flux<String> netFlix = Flux.fromStream(() -> getMovie())
+                    .delayElements(Duration.ofSeconds(2)).publish();
+          
+3) cache()
+        
+
+
+
 
 
 
