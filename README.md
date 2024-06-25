@@ -1433,18 +1433,61 @@ Hot Publisher:
 BackPressure
 
 Reactor Hot Publisher:
+```
 1) share()
  Flux<String> netFlix = Flux.fromStream(() -> getMovie())
                     .delayElements(Duration.ofSeconds(2)).share();
 
-2) Need to check, not working
+2) 
 publish()
-      Flux<String> netFlix = Flux.fromStream(() -> getMovie())
-                    .delayElements(Duration.ofSeconds(2)).publish();
-          
+  // each scene plays for 2 seconds
+            Flux<String> netFlix = Flux.fromStream(() -> getMovie())
+                    .delayElements(Duration.ofSeconds(2));
+
+            ConnectableFlux connectableFlux = netFlix.publish();
+
+            connectableFlux.connect(); // starts publishing....
+
+            // person 1
+            connectableFlux.subscribe(scence -> System.out.println("Person 1 is watching " + scence));
+
+            // person 2 joins after few seconds
+            try {
+                Thread.sleep(3000);
+            }catch (InterruptedException ex) { ex.printStackTrace();}
+            connectableFlux.subscribe(scence -> System.out.println("Person 2 is watching " + scence));
+
+```          
 3) cache()
         
+===
 
+WebFlux based RESTendpoint using MongoDB, with tailable cursor
+
+docker run --name some-mongo -p 27017:27017 -d mongo    
+
+Tailable Cursors: https://www.mongodb.com/docs/manual/core/tailable-cursors/
+
+```
+RDBMS                   MongoDB
+Database                database
+Table                   Collection
+Row                     Document
+column                  field
+
+docker exec -it some-mongo bash
+# mongosh
+
+test> db.createCollection("movies", {capped: true, size: 12345678,max: 50})
+test> db.movies.find();
+
+ implementation 'org.springframework.boot:spring-boot-starter-webflux'
+implementation 'org.projectlombok:lombok'
+ implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+
+
+
+```
 
 
 
