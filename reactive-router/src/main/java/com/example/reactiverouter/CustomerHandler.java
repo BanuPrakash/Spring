@@ -18,7 +18,7 @@ public class CustomerHandler {
         return ServerResponse.ok().body(list, Customer.class);
     }
 
-
+    // SSE
     public Mono<ServerResponse> loadCustomerStream(ServerRequest request) {
         Flux<Customer> list = customerDao.getCustomerStream();
         return ServerResponse.ok().

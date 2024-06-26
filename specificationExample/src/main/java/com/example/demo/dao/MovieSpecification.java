@@ -32,6 +32,7 @@ public class MovieSpecification implements Specification<Movie> {
         //create a new predicate list
         List<Predicate> predicates = new ArrayList<>();
 
+        // select * from movies where price > 98349
         //add add criteria to predicates
         for (SearchCriteria criteria : list) {
             if (criteria.getOperation().equals(SearchOperation.GREATER_THAN)) {

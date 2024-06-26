@@ -24,16 +24,19 @@ import reactor.core.publisher.Sinks;
 @RestController
 @RequestMapping("/api")
 public class TutorialController {
-    Sinks.Many sink;
     @Autowired
     TutorialService tutorialService;
+
+    Sinks.Many sink;
+
     public TutorialController() {
         sink =  Sinks.many().multicast().onBackpressureBuffer();
     }
+
     @GetMapping("/tutorials")
 //    @ResponseStatus(HttpStatus.OK)
     public Flux<ServerSentEvent<Tutorial>> getAllTutorials() {
-           Flux<Tutorial> tutorialFlux =  tutorialService.findAll();
+        Flux<Tutorial> tutorialFlux =  tutorialService.findAll();
         tutorialFlux.doOnNext(tutorial -> {
             sink.tryEmitNext(tutorial);
         }).subscribe();

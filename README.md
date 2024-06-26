@@ -1487,10 +1487,82 @@ implementation 'org.projectlombok:lombok'
 
 
 ```
+Day 8
+* Tailable Cursor
+
+* WebFlux supports RouterFunctions also instead of annotation based RestController [@Getmapping, @PostMapping]
+
+* R2DBC instead of JDBC[blocking]
+* we need to emit event explicitly
 
 
+----
+ManyToOne
+OneToMany
+ManyToMany
+OneToOne
+
+```
+Movie
+mid | name          | year
+1     Pulp Fiction    1994
+2    Broken Arrow     2000
+
+Actor
+aid | name 
+1     John Travolta
+2     Uma Thruman
+
+movies_actors linktable
+
+aid  | mid
+1       1
+1       2
+2       1
+
+movies_actors linktable if it contains additional information [ can't make it as many-to-many]
+
+aid  | mid | role           | order_of | renumiration 
+1       1    protogonist
+1       2   
+2       1    antoginist
 
 
+Projects
+pid | name | client | start_date | end_date
+
+employees
+
+project_employee
+pid | eid | role        | start_date | end_date
+1     234   TeamLead       2-10-2020    2-1-2023
+1     234   Sr.SE          2-1-2023     null
+
+1                   *                                   1
+Project --> ProjectEmployee [association class] ---> Employee
+```
+One To One
+```
+@Entity
+public class Laptop {
+    serial, make, screen, RAM, SDD
+    @OneToOne
+    @JoinColumn("employee_fk")
+    Employee employee;
+}
+
+public class Employee {
+
+}
+
+laptops
+serial | make | screen | RAM | SDD | employee_fk
+1212     ddd    344         3           E631
+```
+
+EntityGraph instead of LAZY or EAGER fetch loading
+
+JPASpecification: build queries programmatically, built on Criteria API [OO way of writing queries].
 
 
 

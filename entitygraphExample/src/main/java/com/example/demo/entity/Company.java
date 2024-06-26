@@ -17,31 +17,31 @@ import javax.persistence.OneToMany;
 
 
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "companyWithDepartmentsNamedQuery",
-                query = "SELECT DISTINCT c " +
-                        "FROM Company c " +
-                        "LEFT JOIN FETCH c.departments " +
-                        "WHERE c.id = :id"),
-        @NamedQuery(name = "companyWithDepartmentsAndEmployeesNamedQuery",
-                query = "SELECT DISTINCT c " +
-                        "FROM Company c " +
-                        "LEFT JOIN FETCH c.departments as d " +
-                        "LEFT JOIN FETCH d.employees " +
-                        "WHERE c.id = :id"),
-        @NamedQuery(name = "companyWithDepartmentsAndEmployeesAndOfficesNamedQuery",
-                query = "SELECT DISTINCT c " +
-                        "FROM Company c " +
-                        "LEFT JOIN FETCH c.departments as d " +
-                        "LEFT JOIN FETCH d.employees " +
-                        "LEFT JOIN FETCH d.offices " +
-                        "WHERE c.id = :id"),
-        @NamedQuery(name = "companyWithCarsNamedQuery",
-                query = "SELECT DISTINCT c " +
-                        "FROM Company c " +
-                        "LEFT JOIN FETCH c.cars " +
-                        "WHERE c.id = :id"),
-})
+//@NamedQueries({
+//        @NamedQuery(name = "companyWithDepartmentsNamedQuery",
+//                query = "SELECT DISTINCT c " +
+//                        "FROM Company c " +
+//                        "LEFT JOIN FETCH c.departments " +
+//                        "WHERE c.id = :id"),
+//        @NamedQuery(name = "companyWithDepartmentsAndEmployeesNamedQuery",
+//                query = "SELECT DISTINCT c " +
+//                        "FROM Company c " +
+//                        "LEFT JOIN FETCH c.departments as d " +
+//                        "LEFT JOIN FETCH d.employees " +
+//                        "WHERE c.id = :id"),
+//        @NamedQuery(name = "companyWithDepartmentsAndEmployeesAndOfficesNamedQuery",
+//                query = "SELECT DISTINCT c " +
+//                        "FROM Company c " +
+//                        "LEFT JOIN FETCH c.departments as d " +
+//                        "LEFT JOIN FETCH d.employees " +
+//                        "LEFT JOIN FETCH d.offices " +
+//                        "WHERE c.id = :id"),
+//        @NamedQuery(name = "companyWithCarsNamedQuery",
+//                query = "SELECT DISTINCT c " +
+//                        "FROM Company c " +
+//                        "LEFT JOIN FETCH c.cars " +
+//                        "WHERE c.id = :id"),
+//})
 
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "companyWithDepartmentsGraph",

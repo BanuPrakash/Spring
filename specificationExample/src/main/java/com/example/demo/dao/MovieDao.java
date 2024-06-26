@@ -5,7 +5,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.example.demo.entity.Movie;
 
-public interface MovieDao extends CrudRepository<Movie, Long>, JpaSpecificationExecutor<Movie> {
+public interface MovieDao extends CrudRepository<Movie, Long>,
+        JpaSpecificationExecutor<Movie> {
 
 }
 

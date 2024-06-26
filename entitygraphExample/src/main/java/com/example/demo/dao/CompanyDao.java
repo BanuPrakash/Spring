@@ -9,8 +9,8 @@ import com.example.demo.entity.Company;
 
 public interface CompanyDao extends JpaRepository<Company, Long>{
 	
-//	@EntityGraph(type=EntityGraphType.FETCH, value="companyWithDepartmentsGraph")
-	@EntityGraph(type=EntityGraphType.FETCH, value="companyWithDepartmentsAndEmployeesAndOfficesGraph")
+	@EntityGraph(type=EntityGraphType.FETCH, value="companyWithDepartmentsGraph")
+//	@EntityGraph(type=EntityGraphType.FETCH, value="companyWithDepartmentsAndEmployeesAndOfficesGraph")
 	Company getById(@Param("id") long id) ;
 	
 	
