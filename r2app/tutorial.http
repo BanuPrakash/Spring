@@ -1,0 +1,9 @@
+POST http://localhost:8080/api/tutorials
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "Some book",
+  "description": "book on best View library",
+  "published": false
+}
