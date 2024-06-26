@@ -1564,5 +1564,30 @@ EntityGraph instead of LAZY or EAGER fetch loading
 
 JPASpecification: build queries programmatically, built on Criteria API [OO way of writing queries].
 
+Spring Security
+
+Step 1:
+Added Security module
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  
+* creates one user with username:"user" and generated password
+Using generated security password: 872c59b7-9337-48e0-b041-a58bbc8dcf07
+
+* makes all resources as protected
+
+* gives login and logout pages
+http://localhost:8080/logout
+
+Filter chain
+
+/api/**
+
+/admin/**
+
+JSESSIONID
+59B3C459A1463CEDBEA0FBF0DA748711
+
+
+
 
 
