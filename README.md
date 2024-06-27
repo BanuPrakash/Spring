@@ -1692,8 +1692,9 @@ OAuth2
 
 SchoolService
 StudentService
-
-
+eureka-client, lombok, web, actuator, mysql, jpa
+schoolService
+eureka-client, lombok, web, actuator, mysql, jpa, openfeign {declarative REST client}
 
 
 

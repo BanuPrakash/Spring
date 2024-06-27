@@ -1,0 +1,42 @@
+POST http://localhost:8090/api/students
+Content-Type: application/json
+
+{
+  "firstName" : "Emilla",
+  "lastName": "clarke",
+  "schoolId": 1
+}
+
+###
+POST http://localhost:8090/api/students
+Content-Type: application/json
+
+{
+  "firstName" : "Kim",
+  "lastName": "King",
+  "schoolId": 2
+}
+
+###
+
+POST http://localhost:8070/api/schools
+Content-Type: application/json
+
+{
+  "name" : "NPS",
+  "email": "admin@nps.gov"
+}
+
+###
+POST http://localhost:8070/api/schools
+Content-Type: application/json
+
+{
+  "name" : "DPS",
+  "email": "admin@dps.gov"
+}
+
+###
+# @name ="microservice"
+GET http://localhost:8070/api/schools/with-students/1
+accept: application/json
