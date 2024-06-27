@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.lang.reflect.Type;
 import java.util.List;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class ProductRestClient implements CommandLineRunner {
     private final RestTemplate template;

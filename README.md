@@ -1584,10 +1584,6 @@ Filter chain
 
 /admin/**
 
-JSESSIONID
-59B3C459A1463CEDBEA0FBF0DA748711
-
-
-
+Security and Introduction to Micro Services
 
 
