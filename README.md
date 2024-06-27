@@ -1688,8 +1688,12 @@ OAuth2
 * ResourceOwner
 
 
-https://github.com/settings/developers
-OAuth2 SSO
+=============================
 
-c603953a930ac733c5e7
-9f8b8d273fd0a5b845a063d3c870b6a64ebd1e51
+SchoolService
+StudentService
+
+
+
+
+
