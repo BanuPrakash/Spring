@@ -1587,3 +1587,95 @@ Filter chain
 Security and Introduction to Micro Services
 
 
+Day 9
+
+* EntityGraph --> when we have too many nested graph relationship, we can't rely on LAZY or EAGER loading
+Default:
+one-to-Many : LAZY
+Many-TO-one: EAGER
+One-to-one: EAGER
+Many-to-many: LAZY
+
+Company --> Department
+Company --> Car
+Department --> Office
+Office --> Location
+
+without this --> n + 1 problem
+select * from companies ==> 10 companies [ 1 SQL]
+select * from departments where company_id =  1;
+select * from departments where company_id =  2;
+...
+select * from departments where company_id =  10;
+
+* Specification API --> built on top of CriteriaAPI which is Object oriented way of forming queries
+for dynamic condition building to fetch records
+
+* Security --> Authentication and Authorization
+1)
+a) just adding security module --> default user with generated password
+b) makes all resources as protected resources
+c) login and logout pages [bootstrap CSS library]
+
+2) InMemoryUserDetailsManager
+3) DAOAuthenticationProvider --> JdbcDaoImpl --> uses standard schema [ users and authrorites table]
+4) SecurtiyFilterChain --> adding and permit access to resources
+5) PasswordEncoder --> NOOP is the default / Bcrypt
+6) AuthenticationManagerBuilder
+
+Stateful:
+JSESSIONID in Cookie was used --> SecurityContext
+
+============
+REST --> Stateless
+JSON Web Tokens --> JWT
+
+``
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+Header:
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+Payload:
+{
+  "sub": "harry@gmail.com",
+  "iat": 1516239022,
+  "exp" : 534223234,
+  "iss": "https://secure.abc.com/",
+  "authorities": "ADMIN", "READER", "WRITER"
+}
+
+SIGNATURE
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  sometopsecretsaltValue
+) 
+
+More advanced way of generating tokens:
+Private key to generate token [ Authorization Server]
+Public key to validate token [ Resource Server]
+
+```
+
+Dependencies:
+implementation 'org.springframework.boot:spring-boot-starter-security'
+implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+token.signing.key=413F4428472B4B6250655368566D5970337336763979244226452948404D6351
+
+1) entities : User --> Role enum
+2) dtos:  SignUpRequest, SignInRequest, JwtAuthenticationResponse
+3) UserDao, UserDetailsServiceImpl [ our own Implementation]
+---
+4) JwtService
+    login --> generateToken()
+    resource  --> isTokenValid()
+5) AuthenticationController --> AuthenticationService
+
+Http Header:
+Authorization: Bearer <<token>>

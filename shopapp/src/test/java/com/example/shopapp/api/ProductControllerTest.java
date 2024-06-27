@@ -1,14 +1,22 @@
 package com.example.shopapp.api;
 
+import com.example.shopapp.ShopappApplication;
 import com.example.shopapp.entity.Product;
+import com.example.shopapp.security.service.JwtService;
 import com.example.shopapp.service.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -19,14 +27,18 @@ import static org.hamcrest.Matchers.*;
 //import static org.hamcrest.CoreMatchers.*;
 import  static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import  static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-@WebMvcTest(ProductController.class)
+//@WebMvcTest(ProductController.class)
+@WebAppConfiguration
+@AutoConfigureMockMvc
+@SpringBootTest(classes = ShopappApplication.class)
 public class ProductControllerTest {
     @MockBean
     private OrderService service;
 
-    @Autowired
+     @Autowired
     private MockMvc mvc; // to perform CRUD
 
+    @WithMockUser(username = "admin", authorities = { "ADMIN", "USER" })
     @Test
     public void getProductsTest() throws Exception {
         List<Product> products = Arrays.asList(

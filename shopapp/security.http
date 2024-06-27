@@ -3,10 +3,11 @@ Content-Type: application/json
 accept: application/json
 
 {
-  "firstName": "Emma",
+  "firstName": "Kim",
   "lastName": "Watson",
-  "email": "emma@gmail.com",
-  "password": "secret123"
+  "email": "kim@gmail.com",
+  "password": "secret123",
+  "role": "ROLE_USER"
 }
 
 ###
@@ -16,17 +17,15 @@ Content-Type: application/json
 accept: application/json
 
 {
-  "email": "emma@gmail.com",
+  "email": "kim@gmail.com",
   "password": "secret123"
 }
 
 ###
 GET http://localhost:8080/api/products
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbW1hQGdtYWlsLmNvbSIsImlhdCI6MTcxOTQ4NjQ0MiwiZXhwIjoxNzE5NDg3ODgyLCJyb2xlcyI6WyJST0xFX0FETUlOIl19.HzRN20h7zK66wHoCav2syNtF3yKUNtza9P7oUpCO_UA
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJraW1AZ21haWwuY29tIiwiaWF0IjoxNzE5NDkzNzEzLCJleHAiOjE3MTk0OTUxNTMsInJvbGVzIjpbIlJPTEVfVVNFUiJdfQ.ZiVoChFJfQVs27FlP3RFySsLMUh7meHGcgNItx-9BXY
 ###
 GET http://localhost:8080/api/posts
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbW1hQGdtYWlsLmNvbSIsImlhdCI6MTcxOTQ4NjQ0MiwiZXhwIjoxNzE5NDg3ODgyLCJyb2xlcyI6WyJST0xFX0FETUlOIl19.HzRN20h7zK66wHoCav2syNtF3yKUNtza9P7oUpCO_UA
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJraW1AZ21haWwuY29tIiwiaWF0IjoxNzE5NDkzNzEzLCJleHAiOjE3MTk0OTUxNTMsInJvbGVzIjpbIlJPTEVfVVNFUiJdfQ.ZiVoChFJfQVs27FlP3RFySsLMUh7meHGcgNItx-9BXY

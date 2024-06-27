@@ -53,7 +53,7 @@ public class JwtService {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .claim("roles",authorities)
-//				.claim("iss", "http://server.adobe.com")
+//				.claim("iss", "http://server.sync.com")
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
