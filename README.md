@@ -1696,5 +1696,12 @@ eureka-client, lombok, web, actuator, mysql, jpa
 schoolService
 eureka-client, lombok, web, actuator, mysql, jpa, openfeign {declarative REST client}
 
+===========================
 
+Security, JWT -> Stateless
+
+MicroServices
+Eureka Discovery Server 
+Eureka Discovery client
+OpenFeign --> Declarative client like HttpExchange family
 
