@@ -1,0 +1,22 @@
+// generate bikes
+
+GET http://localhost:8080/bikes/generate?bikes=10&rentals=3
+
+###
+// rent a bike
+// @name "Rent bike"
+POST http://localhost:8080/bikes/bc4b11ee-c305-4938-bdea-ccc32d62e410/rent?renter=Banu
+
+###
+
+
+// @name ="Query status of Bike"
+GET http://localhost:8080/bikes/bc4b11ee-c305-4938-bdea-ccc32d62e410
+
+###
+// @name ="history of Bike"
+GET http://localhost:8080/bikes/bc4b11ee-c305-4938-bdea-ccc32d62e410/history
+
+###
+// @name ="Get all Bike"
+GET http://localhost:8080/bikes

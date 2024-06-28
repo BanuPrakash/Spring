@@ -1705,3 +1705,41 @@ Eureka Discovery Server
 Eureka Discovery client
 OpenFeign --> Declarative client like HttpExchange family
 
+CQRS --> Command Query Responsibility Seperation
+
+Bike rental application using CQRS
+
+RDBMS --> state
+
+ACCOUNT_NO  NAME     balance
+232         Archer  8941.22 [current state]
+
+
+Event Sourcing:
+-- > way of persiting state as an ordered sequence of events
+CreateBankCommand               --> BankAccountCreatedEvent
+DepositAmountCommand            --> DepositedAmountEvent
+WithDrawAmountCommand           --> WithdrawnAmountEvent
+DepositAmountCommand    
+
+These records serve as system from where current state can be sourced from.
+State history and audit history.
+
+Domain Driven Design
+Domain: group
+Colour Domain, Shape Domain
+
+Bounded Context:
+
+Aggregate: cluster of domain objects that can be treated as a single unit
+
+Axon Framework
+* Command
+* Query
+* Subscription
+* event store [h2]
+
+docker run -d --name my-axon-server -p 8024:8024 -p 8124:8124 axoniq/axonserver
+
+8024: web port
+8124 --> gRPC
