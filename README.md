@@ -8,7 +8,9 @@ Co-founder & CTO: Lucida Technologies Pvt Ltd.,
 
 Emails:
 
-banuprakashc@yahoo.co.in;banuprakash.cr@gmail.com;banu@lucidatechnologies.com
+banuprakashc@yahoo.co.in;banuprakash.cr@gmail.com;
+
+banu@lucidatechnologies.com
 
 https://www.linkedin.com/in/banu-prakash-50416019/
 
